@@ -9,14 +9,14 @@
         type: "text",
         value: value || "",
         maxLength: 15, // Restrict input length
-        onChange: (e) => {
-          const inputValue = e.target.value;
+        onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
+          const inputValue = e.target.value; // Now correctly typed
           if (inputValue.length > 15) {
             onError("Heading should not exceed 15 characters.");
           } else {
             onError(""); // Clear error when valid
-            onUpdate(field.id, inputValue);
           }
+          onUpdate(field.id, inputValue); // Update field value
         },
         style: {
           width: "100%",
