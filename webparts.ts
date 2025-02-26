@@ -3,18 +3,20 @@
   title: "Heading",
   type: CustomCollectionFieldType.custom,
   required: true,
-  onCustomRender: (field, value, onUpdate, item, itemId, onError) => {
+  onCustomRender: (field, value, onUpdate, item, itemId) => {
+    const [error, setError] = React.useState<string>("");
+
     return React.createElement("div", null, 
       React.createElement("input", {
         type: "text",
         value: value || "",
         maxLength: 15, // Restrict input length
         onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
-          const inputValue = e.target.value; // Now correctly typed
+          const inputValue = e.target.value;
           if (inputValue.length > 15) {
-            onError("Heading should not exceed 15 characters.");
+            setError("Heading should not exceed 15 characters.");
           } else {
-            onError(""); // Clear error when valid
+            setError(""); // Clear error when valid
           }
           onUpdate(field.id, inputValue); // Update field value
         },
@@ -25,8 +27,8 @@
           borderRadius: "4px",
         },
       }),
-      value && value.length > 15
-        ? React.createElement("span", { style: { color: "red", fontSize: "12px" } }, "Heading should not exceed 15 characters.")
+      error
+        ? React.createElement("span", { style: { color: "red", fontSize: "12px" } }, error)
         : null
     );
   },
