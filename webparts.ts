@@ -1,3 +1,20 @@
+private _onFilePickerSave = async (filePickerResult: IFilePickerResult) => {
+    try {
+      const fileContent = await filePickerResult.downloadFileContent();
+      if (fileContent) {
+        const folderUrl = `/sites/${this.context.pageContext.site.id}/SiteAssets/SitePages/Dashboard`;
+        await this.context.spHttpClient.post(
+          `${this.context.pageContext.web.absoluteUrl}/_api/web/getFolderByServerRelativeUrl('${folderUrl}')/files/add(overwrite=true, url='${filePickerResult.fileName}')`,
+          { body: fileContent }
+        );
+        console.log("File uploaded successfully");
+      }
+    } catch (error) {
+      console.error("Error uploading file:", error);
+    }
+  };
+
+
 {
   id: "Heading",
   title: "Heading",
