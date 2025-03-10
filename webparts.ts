@@ -1,3 +1,5 @@
+
+
 private _onFilePickerSave = async (filePickerResult: IFilePickerResult) => {
     try {
       const fileContent = await filePickerResult.downloadFileContent();
@@ -14,6 +16,29 @@ private _onFilePickerSave = async (filePickerResult: IFilePickerResult) => {
     }
   };
 
+{
+  id: "ButtonLink",
+  title: "Button Link",
+  type: CustomCollectionFieldType.url,
+  placeholder: "The URL must begin with https://",
+  required: false,
+  onGetErrorMessage: (value: any) => {
+    if (!value) return "";
+
+    // Ensure URL starts with "http"
+    if (!value.startsWith("http")) {
+      return "Error: The URL must start with 'http'. Example: https://www.example.com";
+    }
+
+    // Validate HTTPS URL format
+    const urlPattern = /^(https:\/\/)[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(:\d+)?(\/[^\s]*)?$/;
+    if (!urlPattern.test(value)) {
+      return "Error: The URL must be valid and begin with 'https://'. Example: https://www.google.com";
+    }
+
+    return "";
+  }
+}
 
 {
   id: "Heading",
