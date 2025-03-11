@@ -1,4 +1,22 @@
+private async uploadFileToSharePoint(attachment: IFilePickerResult): Promise<string> {
+    if (!attachment || attachment.fileAbsoluteUrl !== null) {
+      return attachment?.fileAbsoluteUrl || "";
+    }
 
+    const file = await attachment.downloadFileContent();
+
+    // Get subsite name dynamically
+    const siteRelativeUrl = this.context.pageContext.web.serverRelativeUrl;
+    const subsiteName = siteRelativeUrl.split("/").pop()?.replace(/\s+/g, "_");
+    const folderPath = `${this.context.pageContext.site.serverRelativeUrl}/SiteAssets/SitePages/${subsiteName}_Bc_Carousel_Image_Data`;
+
+    // Upload the file to SharePoint
+    const uploadedFile = await this.web
+      .getFolderByServerRelativePath(folderPath)
+      .files.addChunked(attachment.fileName, file, { Overwrite: true });
+
+    return uploadedFile?.ServerRelativeUrl || "";
+  }
 
 private _onFilePickerSave = async (filePickerResult: IFilePickerResult) => {
     try {
