@@ -1,0 +1,3533 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "JSON Schema for SiteScript Extensions",
+  "definitions": {
+    "activateSPFeature": {
+      "type": "object",
+      "properties": {
+        "verb": {
+          "type": "string",
+          "pattern": "^activateSPFeature$"
+        },
+        "featureId": {
+          "type": "string",
+          "description": "The Guid of the feature to activate."
+        },
+        "scope": {
+          "type": "string",
+          "enum": [
+            "web",
+            "site"
+          ],
+          "description": "The scope of the feature to activate."
+        }
+      },
+      "required": [
+        "featureId",
+        "verb"
+      ]
+    },
+    "addContentTypesFromHub": {
+      "type": "object",
+      "properties": {
+        "verb": {
+          "type": "string",
+          "pattern": "^addContentTypesFromHub$"
+        },
+        "ids": {
+          "type": "array",
+          "description": "Optional parameter. If provided, an array of content type ids indicating the content types to be synced from the content type hub. If not provided, this action will sync all content types from the content type hub",
+          "items": [
+            {
+              "type": "string",
+              "description": "The content type id"
+            }
+          ]
+        }
+      },
+      "required": [
+        "verb"
+      ],
+      "additionalProperties": false
+    },
+    "associateExtension": {
+      "type": "object",
+      "properties": {
+        "verb": {
+          "type": "string",
+          "pattern": "^associateExtension$"
+        },
+        "title": {
+          "type": "string",
+          "description": "Title of the extension."
+        },
+        "location": {
+          "type": "string",
+          "pattern": "^ClientSideExtension\\..*$",
+          "description": "If this extension creates commands, where the commands are display. Otherwise, this should be set to ClientSideExtension.ApplicationCustomizer."
+        },
+        "clientSideComponentId": {
+          "type": "string",
+          "description": "GUID of the extension."
+        },
+        "clientSideComponentProperties": {
+          "type": "string",
+          "description": "This is an optional parameter, which can be used to provide properties for the instance."
+        },
+        "registrationId": {
+          "type": "string",
+          "description": "This is an optional parameter, which indicates the type of the list to which extension is associated, if the extension is associated with lists."
+        },
+        "registrationType": {
+          "type": "string",
+          "pattern": "^$|^List$",
+          "description": "This is an optional parameter, which should be specified if the extension is associated with a list."
+        },
+        "scope": {
+          "type": "string",
+          "pattern": "^(Web|Site)$",
+          "description": "Indicates whether the extension is associated with a Web or a Site."
+        }
+      },
+      "required": [
+        "clientSideComponentId",
+        "title",
+        "location",
+        "verb",
+        "scope"
+      ],
+      "additionalProperties": false
+    },
+    "createSPList": {
+      "type": "object",
+      "properties": {
+        "verb": {
+          "type": "string",
+          "pattern": "^createSPList$"
+        },
+        "listName": {
+          "type": "string",
+          "description": "An identifying name for the list."
+        },
+        "templateType": {
+          "type": "number",
+          "description": "Specifies the type of a list definition or a list template."
+        },
+        "addNavLink": {
+          "type": "boolean",
+          "description": "Add a link to this list into the Quicklaunch using this list's title."
+        },
+        "hidden": {
+          "type": "boolean",
+          "description": "Optional attribute that defaults to false. If true, the list created will be hidden."
+        },
+        "color": {
+          "type": "string",
+          "description": "Optional attribute that specifies the list color."
+        },
+        "icon": {
+          "type": "string",
+          "description": "Optional attribute that specifies the list icon."
+        },
+        "fieldRefsXml": {
+          "type": "array",
+          "description": "Optional list of FieldRefs.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "output": {
+          "type": "object",
+          "description": "Optional parameter. Used to bind list properties to run parameters.",
+          "properties": {
+            "webRelativeUrl": {
+              "type": "string",
+              "description": "Optional parameter. If provided, the web-relative url of the list will be bound to the provided run parameter label."
+            },
+            "absoluteUrl": {
+              "type": "string",
+              "description": "Optional parameter. If provided, the absolute url of the list will be bound to the provided run parameter label."
+            }
+          },
+          "additionalProperties": false
+        },
+        "subactions": {
+          "description": "Sub-actions to run on the list.",
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/SPListSubactions/setTitle"
+              },
+              {
+                "$ref": "#/definitions/SPListSubactions/setDescription"
+              },
+              {
+                "$ref": "#/definitions/SPListSubactions/addSPField"
+              },
+              {
+                "$ref": "#/definitions/SPListSubactions/deleteSPField"
+              },
+              {
+                "$ref": "#/definitions/SPListSubactions/addSPFieldXml"
+              },
+              {
+                "$ref": "#/definitions/SPListSubactions/addSPLookupFieldXml"
+              },
+              {
+                "$ref": "#/definitions/SPListSubactions/addSiteColumn"
+              },
+              {
+                "$ref": "#/definitions/SPListSubactions/addSPView"
+              },
+              {
+                "$ref": "#/definitions/SPListSubactions/removeSPView"
+              },
+              {
+                "$ref": "#/definitions/SPListSubactions/addFile"
+              },
+              {
+                "$ref": "#/definitions/SPListSubactions/addFolder"
+              },
+              {
+                "$ref": "#/definitions/SPListSubactions/setDocumentTemplates"
+              },
+              {
+                "$ref": "#/definitions/SPListSubactions/addContentType"
+              },
+              {
+                "$ref": "#/definitions/SPListSubactions/removeContentType"
+              },
+              {
+                "$ref": "#/definitions/SPListSubactions/setClientFormCustomFormatter"
+              },
+              {
+                "$ref": "#/definitions/SPListSubactions/setSPFieldCustomFormatter"
+              },
+              {
+                "$ref": "#/definitions/SPListSubactions/associateFieldCustomizer"
+              },
+              {
+                "$ref": "#/definitions/SPListSubactions/associateListViewCommandSet"
+              }
+            ]
+          },
+          "additionalItems": false
+        }
+      },
+      "required": [
+        "listName",
+        "templateType",
+        "verb"
+      ],
+      "additionalProperties": false
+    },
+    "deactivateSPFeature": {
+      "type": "object",
+      "properties": {
+        "verb": {
+          "type": "string",
+          "pattern": "^deactivateSPFeature$"
+        },
+        "featureId": {
+          "type": "string",
+          "description": "The Guid of the feature to deactivate."
+        },
+        "scope": {
+          "type": "string",
+          "enum": [
+            "web",
+            "site"
+          ],
+          "description": "Optional parameter. The scope of the feature to deactivate. Defaults to web."
+        }
+      },
+      "required": [
+        "featureId",
+        "verb"
+      ]
+    },
+    "SPListSubactions": {
+      "addContentType": {
+        "type": "object",
+        "properties": {
+          "verb": {
+            "type": "string",
+            "pattern": "^addContentType$"
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the ContentType to add."
+          },
+          "id": {
+            "type": "string",
+            "description": "Optional, the id of the ContentType to add."
+          }
+        },
+        "required": [
+          "name",
+          "verb"
+        ],
+        "additionalProperties": false
+      },
+      "removeContentType": {
+        "type": "object",
+        "properties": {
+          "verb": {
+            "type": "string",
+            "pattern": "^removeContentType$"
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the ContentType to remove."
+          }
+        },
+        "required": [
+          "name",
+          "verb"
+        ],
+        "additionalProperties": false
+      },
+      "setSPFieldCustomFormatter": {
+        "type": "object",
+        "properties": {
+          "verb": {
+            "type": "string",
+            "pattern": "^setSPFieldCustomFormatter$"
+          },
+          "fieldDisplayName": {
+            "type": "string",
+            "description": "The DisplayName of the SPField to operate on."
+          },
+          "formatterJSON": {
+            "type": "object",
+            "description": "A JSON object to use as the field CustomFormatter."
+          }
+        },
+        "required": [
+          "fieldDisplayName",
+          "verb",
+          "formatterJSON"
+        ],
+        "additionalProperties": false
+      },
+      "setTitle": {
+        "type": "object",
+        "properties": {
+          "verb": {
+            "type": "string",
+            "pattern": "^setTitle$"
+          },
+          "title": {
+            "type": "string",
+            "description": "The new title of the list."
+          }
+        },
+        "required": [
+          "title",
+          "verb"
+        ],
+        "additionalProperties": false
+      },
+      "setDescription": {
+        "type": "object",
+        "properties": {
+          "verb": {
+            "type": "string",
+            "pattern": "^setDescription$"
+          },
+          "description": {
+            "type": "string",
+            "description": "The new description of the list."
+          }
+        },
+        "required": [
+          "description",
+          "verb"
+        ],
+        "additionalProperties": false
+      },
+      "addSiteColumn": {
+        "type": "object",
+        "properties": {
+          "verb": {
+            "type": "string",
+            "pattern": "^addSiteColumn$"
+          },
+          "internalName": {
+            "type": "string",
+            "description": "The internal name of the site column to add."
+          },
+          "addToDefaultView": {
+            "type": "boolean",
+            "description": "Optional attribute that defaults to false. If true, the newly added field will also be added to the default view."
+          }
+        },
+        "required": [
+          "internalName",
+          "verb"
+        ],
+        "additionalProperties": false
+      },
+      "addSPField": {
+        "type": "object",
+        "properties": {
+          "verb": {
+            "type": "string",
+            "pattern": "^addSPField$"
+          },
+          "fieldType": {
+            "type": "string",
+            "pattern": "^(Text|Note|Number|Boolean|User|DateTime)$",
+            "description": "The type of field to add."
+          },
+          "displayName": {
+            "type": "string",
+            "description": "The display name of the field."
+          },
+          "internalName": {
+            "type": "string",
+            "description": "Optional attribute. If provided, specifies the internal name of the field. If not provided, the internal name will be based on the display name"
+          },
+          "isRequired": {
+            "type": "boolean",
+            "description": "Whether this field is required to contain information."
+          },
+          "addToDefaultView": {
+            "type": "boolean",
+            "description": "Optional attribute that defaults to false. If true, the newly added field will also be added to the default view."
+          },
+          "enforceUnique": {
+            "type": "boolean",
+            "description": "Optional attribute that defaults to false. If true, then all values for this field must be unique."
+          },
+          "id": {
+            "type": "string",
+            "description": "Optional attribute. The ID Guid of the field. This needs to be uniquely generated Guid. It is strongly recommended that you include this attribute to ensure that this action is reentrant."
+          }
+        },
+        "required": [
+          "displayName",
+          "fieldType",
+          "isRequired",
+          "verb"
+        ],
+        "additionalProperties": false
+      },
+      "deleteSPField": {
+        "type": "object",
+        "properties": {
+          "verb": {
+            "type": "string",
+            "pattern": "^deleteSPField$"
+          },
+          "displayName": {
+            "type": "string",
+            "description": "The display name of the field to delete."
+          }
+        },
+        "required": [
+          "displayName"
+        ],
+        "additionalProperties": false
+      },
+      "addSPFieldXml": {
+        "type": "object",
+        "properties": {
+          "verb": {
+            "type": "string",
+            "pattern": "^addSPFieldXml$"
+          },
+          "schemaXml": {
+            "type": "string",
+            "description": "The schemaXml specifying the field. See https://msdn.microsoft.com/en-us/library/office/aa979575.aspx"
+          },
+          "addToDefaultView": {
+            "type": "boolean",
+            "description": "Optional attribute that defaults to false. If true, the newly added field will also be added to the default view."
+          }
+        },
+        "required": [
+          "schemaXml",
+          "verb"
+        ],
+        "additionalProperties": false
+      },
+      "addSPLookupFieldXml": {
+        "type": "object",
+        "properties": {
+          "verb": {
+            "type": "string",
+            "pattern": "^addSPLookupFieldXml$"
+          },
+          "schemaXml": {
+            "type": "string",
+            "description": "The schemaXml specifying the field. See https://msdn.microsoft.com/en-us/library/office/aa979575.aspx"
+          },
+          "targetListName": {
+            "type": "string",
+            "description": "The name that identifies the list this lookup field is targeted against. Provide either this or targetListUrl."
+          },
+          "targetListUrl": {
+            "type": "string",
+            "description": "A web-relative url that identifies the list this lookup field is targeted against. Provide either this or targetListName."
+          },
+          "addToDefaultView": {
+            "type": "boolean",
+            "description": "Optional attribute that defaults to false. If true, the newly added field will also be added to the default view."
+          }
+        },
+        "required": [
+          "schemaXml",
+          "verb"
+        ],
+        "additionalProperties": false
+      },
+      "associateFieldCustomizer": {
+        "type": "object",
+        "properties": {
+          "verb": {
+            "type": "string",
+            "pattern": "^associateFieldCustomizer$"
+          },
+          "internalName": {
+            "type": "string",
+            "description": "The internalName of the field to customize."
+          },
+          "clientSideComponentId": {
+            "type": "string",
+            "description": "GUID of the extension to use to customize the field."
+          },
+          "clientSideComponentProperties": {
+            "type": "string",
+            "description": "This is an optional parameter, which can be used to provide properties for the Field Customizer instance."
+          }
+        },
+        "required": [
+          "clientSideComponentId",
+          "internalName",
+          "verb"
+        ],
+        "additionalProperties": false
+      },
+      "associateListViewCommandSet": {
+        "type": "object",
+        "properties": {
+          "verb": {
+            "type": "string",
+            "pattern": "^associateListViewCommandSet$"
+          },
+          "title": {
+            "type": "string",
+            "description": "Title of the extension."
+          },
+          "location": {
+            "type": "string",
+            "pattern": "^(ClientSideExtension\\.ListViewCommandSet\\.ContextMenu|ClientSideExtension\\.ListViewCommandSet\\.CommandBar|ClientSideExtension\\.ListViewCommandSet)$",
+            "description": "Where the commands are displayed."
+          },
+          "clientSideComponentId": {
+            "type": "string",
+            "description": "GUID of the extension to use to customize the field."
+          },
+          "clientSideComponentProperties": {
+            "type": "string",
+            "description": "This is an optional parameter, which can be used to provide properties for the Field Customizer instance."
+          }
+        },
+        "required": [
+          "clientSideComponentId",
+          "title",
+          "location",
+          "verb"
+        ],
+        "additionalProperties": false
+      },
+      "addSPView": {
+        "type": "object",
+        "properties": {
+          "verb": {
+            "type": "string",
+            "pattern": "^addSPView$"
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the view."
+          },
+          "viewFields": {
+            "description": "An array of the internal names of the fields of the view.",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "query": {
+            "type": "string",
+            "description": "A CAML query string that contains the where clause for the view's query. See https://msdn.microsoft.com/en-us/library/ms462365"
+          },
+          "rowLimit": {
+            "type": "integer",
+            "description": "The row limit of the view."
+          },
+          "isPaged": {
+            "type": "boolean",
+            "description": "Whether the view is paged."
+          },
+          "makeDefault": {
+            "type": "boolean",
+            "description": "If true, the view will be made the default view of the list."
+          },
+          "scope": {
+            "type": "string",
+            "pattern": "^(Default|Recursive|RecursiveAll|FilesOnly)$",
+            "description": "Optional. The scope of the view. See https://msdn.microsoft.com/en-us/library/microsoft.sharepoint.spviewscope.aspx"
+          },
+          "formatterJSON": {
+            "type": "object",
+            "description": "A JSON object to use as the view CustomFormatter."
+          },
+          "addLink": {
+            "type": "string",
+            "description": "If present and not null or empty, a link to the view will added to the QuickLaunch, using the provided string as a name."
+          },
+          "viewType2": {
+            "type": "string",
+            "description": "Optional parameter. Specifies type data for the view."
+          },
+          "viewDataXml": {
+            "type": "string",
+            "description": "Optional parameter, The xml specifying the view data."
+          },
+          "replaceViewFields": {
+            "type": "boolean",
+            "description": "Optional parameter, defaulting to false. If true, the view fields already on the view will be replaced by the those specified by the viewFields paramter."
+          },
+          "columnWidthXml": {
+            "type": "string",
+            "description": "Optional parameter, The xml specifying the column width."
+          }
+        },
+        "required": [
+          "name",
+          "viewFields",
+          "query",
+          "rowLimit",
+          "isPaged"
+        ],
+        "additionalProperties": false
+      },
+      "removeSPView": {
+        "type": "object",
+        "properties": {
+          "verb": {
+            "type": "string",
+            "pattern": "^removeSPView$"
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the view to remove."
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "additionalProperties": false
+      },
+      "addFile": {
+        "type": "object",
+        "properties": {
+          "verb": {
+            "type": "string",
+            "pattern": "^addFile$"
+          },
+          "destination": {
+            "type": "string",
+            "description": "The location in the library to copy the file to, including the filename, relative to the root of the library.",
+            "examples": [
+              "Training Documents/Accounting/First Day.pdf"
+            ]
+          },
+          "source": {
+            "type": "string",
+            "description": "Optional parameter. The location in the site script package to copy the file from, relative to the root directory. Provide either this or sourceUrl."
+          },
+          "sourceUrl": {
+            "type": "string",
+            "description": "Optional parameter. The location in the tenant to copy the file from, as an absolute url. Provide either this or source."
+          }
+        },
+        "required": [
+          "verb",
+          "destination"
+        ],
+        "additionalProperties": false
+      },
+      "addFolder": {
+        "type": "object",
+        "properties": {
+          "verb": {
+            "type": "string",
+            "pattern": "^addFolder$"
+          },
+          "path": {
+            "type": "string",
+            "description": "The path of the new folder, relative to the root of the library.",
+            "examples": [
+              "Training Documents/Accounting"
+            ]
+          }
+        },
+        "required": [
+          "verb",
+          "path"
+        ],
+        "additionalProperties": false
+      },
+      "setDocumentTemplates": {
+        "type": "object",
+        "properties": {
+          "verb": {
+            "type": "string",
+            "pattern": "^setDocumentTemplates$"
+          },
+          "templateJSON": {
+            "type": "object",
+            "description": "A JSON object representing the new document templates."
+          }
+        },
+        "required": [
+          "verb",
+          "templateJSON"
+        ],
+        "additionalProperties": false
+      },
+      "setClientFormCustomFormatter": {
+        "type": "object",
+        "properties": {
+          "verb": {
+            "type": "string",
+            "pattern": "^setClientFormCustomFormatter$"
+          },
+          "clientFormCustomFormatter": {
+            "type": "object",
+            "description": "A JSON object representing the formatter for form."
+          }
+        },
+        "required": [
+          "clientFormCustomFormatter",
+          "verb"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "addPrincipalToSPGroup": {
+      "type": "object",
+      "properties": {
+        "verb": {
+          "type": "string",
+          "pattern": "^addPrincipalToSPGroup$"
+        },
+        "principal": {
+          "type": "string",
+          "description": "The name of principal to add to the SPGroup."
+        },
+        "group": {
+          "type": "string",
+          "description": "The SPGroup to add the principal to.",
+          "pattern": "^(Members|Owners|Visitors)$"
+        }
+      },
+      "required": [
+        "principal",
+        "group",
+        "verb"
+      ]
+    },
+    "applyTheme": {
+      "type": "object",
+      "properties": {
+        "verb": {
+          "type": "string",
+          "pattern": "^applyTheme$"
+        },
+        "themeName": {
+          "type": "string",
+          "description": "The name of the theme to apply. Provide either this or themeJson."
+        },
+        "themeJson": {
+          "type": "object",
+          "description": "An optional JSON object specifying the theme exactly. Provide either this or themeName. See https://docs.microsoft.com/en-us/sharepoint/dev/declarative-customization/site-theming/sharepoint-site-theming-json-schema for information on how to generate this object."
+        }
+      },
+      "required": [
+        "verb"
+      ]
+    },
+    "setSiteLogo": {
+      "type": "object",
+      "properties": {
+        "verb": {
+          "type": "string",
+          "pattern": "^setSiteLogo$"
+        },
+        "url": {
+          "type": "string",
+          "description": "The URL of the new SiteLogo."
+        }
+      },
+      "required": [
+        "url",
+        "verb"
+      ]
+    },
+    "setSiteLogoFromFile": {
+      "type": "object",
+      "properties": {
+        "verb": {
+          "type": "string",
+          "pattern": "^setSiteLogoFromFile$"
+        },
+        "source": {
+          "type": "string",
+          "description": "The location in the site script package to copy the image file from, relative to the root directory. Provide either this or sourceUrl or templateImageUrl."
+        },
+        "sourceUrl": {
+          "type": "string",
+          "description": "Optional parameter. The location in the tenant to copy the image file from, as an absolute url. Provide either this or source or templateImageUrl."
+        },
+        "templateImageUrl": {
+          "type": "string",
+          "description": "Optional parameter. The location of the template image file. Provide either this or source or sourceUrl."
+        }
+      },
+      "required": [
+        "verb"
+      ]
+    },
+    "triggerFlow": {
+      "type": "object",
+      "properties": {
+        "verb": {
+          "type": "string",
+          "pattern": "^triggerFlow$"
+        },
+        "url": {
+          "type": "string",
+          "description": "The trigger URL of the Flow."
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the Flow."
+        },
+        "waitForReply": {
+          "type": "boolean",
+          "description": "If true, the script will expect that the Flow will call Microsoft.SharePoint.Utilities.WebTemplateExtensions.SiteScriptUtility.SetSiteScriptStageOutcome() when it has finished executing. Note that this will not cause the script to block. The script will keep executing, but for record-keeping purposes, the run will be considered incomplete until the reply is made."
+        },
+        "parameters": {
+          "type": "object",
+          "description": "An option set of parameters to pass into the Flow."
+        }
+      },
+      "required": [
+        "name",
+        "url",
+        "verb"
+      ],
+      "additionalProperties": false
+    },
+    "installSolution": {
+      "type": "object",
+      "properties": {
+        "verb": {
+          "type": "string",
+          "pattern": "^installSolution$"
+        },
+        "id": {
+          "type": "string",
+          "description": "The ID of the Solution."
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the Solution."
+        }
+      },
+      "required": [
+        "id",
+        "verb",
+        "name"
+      ],
+      "additionalProperties": false
+    },
+    "addNavLink": {
+      "type": "object",
+      "properties": {
+        "verb": {
+          "type": "string",
+          "pattern": "^addNavLink$"
+        },
+        "url": {
+          "type": "string",
+          "description": "The url of the link to add."
+        },
+        "displayName": {
+          "type": "string",
+          "description": "The display name of the link"
+        },
+        "isWebRelative": {
+          "type": "boolean",
+          "description": "Optionally indicates whether the link is web-relative. The default is false."
+        },
+        "parentDisplayName": {
+          "type": "string",
+          "description": "Optional parameter. If provided, makes this nav link a child of the nav link with this displayName. If both this and parentUrl are provided, it searches for a link that matches both to be the parent."
+        },
+        "parentUrl": {
+          "type": "string",
+          "description": "Optional parameter. If provided, makes this nav link a child of the nav link with this url. If both this and parentDisplayName are provided, it searches for a link that matches both to be the parent."
+        },
+        "isParentUrlWebRelative": {
+          "type": "boolean",
+          "description": "Optional parameter. Indicates whether parentUrl is web-relative. The default is false."
+        },
+        "navComponent": {
+          "type": "string",
+          "description": "Which nav component to add the link to. The QuickLaunch is the default",
+          "pattern": "^(QuickLaunch|Hub|Footer)$"
+        }
+      },
+      "required": [
+        "displayName",
+        "url",
+        "verb"
+      ],
+      "additionalProperties": false
+    },
+    "removeNavLink": {
+      "type": "object",
+      "properties": {
+        "verb": {
+          "type": "string",
+          "pattern": "^removeNavLink$"
+        },
+        "url": {
+          "type": "string",
+          "description": "Optionally indicates the url of the link to remove. if this parameter is not provided, the link to be removed will be found based on the displayName only."
+        },
+        "displayName": {
+          "type": "string",
+          "description": "The display name of the link to remove."
+        },
+        "isWebRelative": {
+          "type": "boolean",
+          "description": "Optionally indicates whether the link is web-relative. The default is false."
+        },
+        "navComponent": {
+          "type": "string",
+          "description": "Which nav component to remove the link from. The QuickLaunch is the default",
+          "pattern": "^(QuickLaunch|Hub|Footer)$"
+        }
+      },
+      "required": [
+        "displayName",
+        "verb"
+      ],
+      "additionalProperties": false
+    },
+    "joinHubSite": {
+      "type": "object",
+      "properties": {
+        "verb": {
+          "type": "string",
+          "pattern": "^joinHubSite$"
+        },
+        "hubSiteId": {
+          "type": "string",
+          "description": "A Guid specifying the hub site."
+        },
+        "name": {
+          "type": "string",
+          "description": "An optional string specifying the name of the hub site."
+        }
+      },
+      "required": [
+        "hubSiteId",
+        "verb"
+      ],
+      "additionalProperties": false
+    },
+    "createContentType": {
+      "type": "object",
+      "properties": {
+        "verb": {
+          "type": "string",
+          "pattern": "^createContentType$"
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the content type."
+        },
+        "description": {
+          "type": "string",
+          "description": "Optional description of the content type."
+        },
+        "parentName": {
+          "type": "string",
+          "description": "Name of the parent content type. Provide either this, parentId, or id."
+        },
+        "parentId": {
+          "type": "string",
+          "description": "Id of the parent content type. Provide either this, parentName, or id."
+        },
+        "id": {
+          "type": "string",
+          "description": "Id of the content type. Provide either this, parentName, or parentId."
+        },
+        "hidden": {
+          "type": "boolean",
+          "description": "Whether the content type is hidden."
+        },
+        "group": {
+          "type": "string",
+          "description": "Optional parameter. If provided, sets the group of the content type."
+        },
+        "subactions": {
+          "description": "Sub-actions to run on the content type.",
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/SPContentTypeSubactions/addSiteColumn"
+              },
+              {
+                "$ref": "#/definitions/SPContentTypeSubactions/removeSiteColumn"
+              }
+            ]
+          },
+          "additionalItems": false
+        }
+      },
+      "required": [
+        "verb",
+        "name",
+        "hidden"
+      ],
+      "additionalProperties": false
+    },
+    "SPContentTypeSubactions": {
+      "addSiteColumn": {
+        "type": "object",
+        "properties": {
+          "verb": {
+            "type": "string",
+            "pattern": "^addSiteColumn$"
+          },
+          "internalName": {
+            "type": "string",
+            "description": "The internal name of the site column to add."
+          }
+        },
+        "required": [
+          "internalName",
+          "verb"
+        ],
+        "additionalProperties": false
+      },
+      "removeSiteColumn": {
+        "type": "object",
+        "properties": {
+          "verb": {
+            "type": "string",
+            "pattern": "^removeSiteColumn$"
+          },
+          "internalName": {
+            "type": "string",
+            "description": "The internal name of the site column to remove."
+          }
+        },
+        "required": [
+          "internalName",
+          "verb"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "createSiteColumn": {
+      "type": "object",
+      "properties": {
+        "verb": {
+          "type": "string",
+          "pattern": "^createSiteColumn$"
+        },
+        "fieldType": {
+          "type": "string",
+          "pattern": "^(Text|Note|Number|Boolean|User|DateTime)$",
+          "description": "The type of column to add."
+        },
+        "internalName": {
+          "type": "string",
+          "description": "Internal name of the column"
+        },
+        "displayName": {
+          "type": "string",
+          "description": "Optional display name of the column."
+        },
+        "isRequired": {
+          "type": "boolean",
+          "description": "Whether this column is required to contain information."
+        },
+        "group": {
+          "type": "string",
+          "description": "Optional attribute. If provided, sets the column group to which this column belongs."
+        },
+        "enforceUnique": {
+          "type": "boolean",
+          "description": "Optional attribute that defaults to false. If true, then all values for this column must be unique."
+        },
+        "id": {
+          "type": "string",
+          "description": "Optional attribute. The ID Guid of the field. This needs to be uniquely generated Guid. It is strongly recommended that you include this attribute to ensure that this action is reentrant."
+        }
+      },
+      "required": [
+        "fieldType",
+        "verb",
+        "internalName",
+        "isRequired"
+      ],
+      "additionalProperties": false
+    },
+    "createSiteColumnXml": {
+      "type": "object",
+      "properties": {
+        "verb": {
+          "type": "string",
+          "pattern": "^createSiteColumnXml$"
+        },
+        "schemaXml": {
+          "type": "string",
+          "description": "The schemaXml specifying the field. See https://msdn.microsoft.com/en-us/library/office/aa979575.aspx"
+        },
+        "pushChanges": {
+          "type": "boolean",
+          "description": "Indicates whether this change should be pushed to lists that already reference this field. Defaults to true."
+        }
+      },
+      "required": [
+        "verb",
+        "schemaXml"
+      ],
+      "additionalProperties": false
+    },
+    "setSiteExternalSharingCapability": {
+      "type": "object",
+      "properties": {
+        "verb": {
+          "type": "string",
+          "pattern": "^setSiteExternalSharingCapability$"
+        },
+        "capability": {
+          "type": "string",
+          "pattern": "^(Disabled|ExistingExternalUserSharingOnly|ExternalUserSharingOnly|ExternalUserAndGuestSharing)$",
+          "description": "A string specifying the sharing capability for the site."
+        }
+      },
+      "required": [
+        "capability",
+        "verb"
+      ],
+      "additionalProperties": false
+    },
+    "setRegionalSettings": {
+      "type": "object",
+      "properties": {
+        "verb": {
+          "type": "string",
+          "pattern": "^setRegionalSettings$"
+        },
+        "timeZone": {
+          "type": "integer",
+          "description": "A number specifying the time zone. See https://msdn.microsoft.com/library/microsoft.sharepoint.spregionalsettings.timezones.aspx"
+        },
+        "locale": {
+          "type": "integer",
+          "description": "A number specifying the culture by lcid. See https://msdn.microsoft.com/en-us/library/ms912047(v=winembedded.10).aspx"
+        },
+        "sortOrder": {
+          "type": "integer",
+          "description": "A number specifying the sort order. See https://msdn.microsoft.com/en-us/library/microsoft.sharepoint.spregionalsettings.collation.aspx"
+        },
+        "hourFormat": {
+          "type": "string",
+          "pattern": "^(12|24)$",
+          "description": "Specifies whether the site should use 12-hour or 24-hour time."
+        }
+      },
+      "required": [
+        "sortOrder",
+        "verb"
+      ],
+      "additionalProperties": false
+    },
+    "setSiteBranding": {
+      "type": "object",
+      "properties": {
+        "verb": {
+          "type": "string",
+          "pattern": "^setSiteBranding$"
+        },
+        "navigationLayout": {
+          "type": "string",
+          "pattern": "^(Cascade|Megamenu)$",
+          "description": "Specifies the layout of the navigation. If this parameter is omitted, the layout will not be changed."
+        },
+        "headerLayout": {
+          "type": "string",
+          "pattern": "^(Standard|Compact)$",
+          "description": "Specifies the layout of the header. If this parameter is omitted, the layout will not be changed."
+        },
+        "headerBackground": {
+          "type": "string",
+          "pattern": "^(None|Neutral|Soft|Strong)$",
+          "description": "Specifies the emphasis on the background color of the header. If this parameter is omitted, it will not be changed."
+        },
+        "showFooter": {
+          "type": "boolean",
+          "description": "Specifies whether the footer should be visible. If this parameter is omitted. The visibility of the footer will not be changed."
+        }
+      },
+      "required": [
+        "verb"
+      ],
+      "additionalProperties": false
+    },
+    "setFooterLogo": {
+      "type": "object",
+      "properties": {
+        "verb": {
+          "type": "string",
+          "pattern": "^setFooterLogo$"
+        },
+        "imageUrl": {
+          "type": "string",
+          "description": "The image URL of the footer logo. If empty string is provided, the current footer logo will be removed."
+        },
+        "imageUrlType": {
+          "type": "string",
+          "enum": [
+            "WebRelativeUrl",
+            "TemplateImage"
+          ],
+          "description": "Optional parameter. Specifies the type of imageUrl. The default is WebRelativeUrl."
+        }
+      },
+      "required": [
+        "verb",
+        "imageUrl"
+      ]
+    }
+  },
+  "type": "object",
+  "properties": {
+    "actions": {
+      "title": "array of supported actions",
+      "type": "array",
+      "items": {
+        "anyOf": [
+          {
+            "$ref": "#/definitions/activateSPFeature"
+          },
+          {
+            "$ref": "#/definitions/addContentTypesFromHub"
+          },
+          {
+            "$ref": "#/definitions/associateExtension"
+          },
+          {
+            "$ref": "#/definitions/addPrincipalToSPGroup"
+          },
+          {
+            "$ref": "#/definitions/addNavLink"
+          },
+          {
+            "$ref": "#/definitions/applyTheme"
+          },
+          {
+            "$ref": "#/definitions/createContentType"
+          },
+          {
+            "$ref": "#/definitions/createSiteColumn"
+          },
+          {
+            "$ref": "#/definitions/createSiteColumnXml"
+          },
+          {
+            "$ref": "#/definitions/createSPList"
+          },
+          {
+            "$ref": "#/definitions/deactivateSPFeature"
+          },
+          {
+            "$ref": "#/definitions/installSolution"
+          },
+          {
+            "$ref": "#/definitions/joinHubSite"
+          },
+          {
+            "$ref": "#/definitions/removeNavLink"
+          },
+          {
+            "$ref": "#/definitions/setRegionalSettings"
+          },
+          {
+            "$ref": "#/definitions/setSiteBranding"
+          },
+          {
+            "$ref": "#/definitions/setSiteLogo"
+          },
+          {
+            "$ref": "#/definitions/setSiteLogoFromFile"
+          },
+          {
+            "$ref": "#/definitions/setSiteExternalSharingCapability"
+          },
+          {
+            "$ref": "#/definitions/triggerFlow"
+          },
+          {
+            "$ref": "#/definitions/setFooterLogo"
+          }
+        ]
+      },
+      "additionalItems": false
+    },
+    "$schema": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}
+
+[
+    {
+        "odata.type": "SP.Data.BC_x005f_FacilitiesListItem",
+        "odata.id": "541655e5-af4e-4946-8aa8-1c8738bd5b00",
+        "odata.etag": "\"3\"",
+        "odata.editLink": "Web/Lists(guid'8569e85a-c826-4152-ba96-790eeebb5938')/Items(1)",
+        "FileSystemObjectType": 0,
+        "Id": 1,
+        "ServerRedirectedEmbedUri": null,
+        "ServerRedirectedEmbedUrl": "",
+        "ContentTypeId": "0x01003CA0504676C2AA4295EC7B99E16A04EE",
+        "Title": "Banner Post-Acute Care",
+        "ComplianceAssetId": null,
+        "BC_FacilityImage": {
+            "Description": "https://testbhealth.sharepoint.com/sites/BannerConnect/Images_AK/Facilities/banner-home-care-and-medical-equipment.jpg",
+            "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Images_AK/Facilities/banner-home-care-and-medical-equipment.jpg"
+        },
+        "isActive": true,
+        "BC_FacilityLink": {
+            "Description": "https://testbhealth.sharepoint.com/sites/BannerConnect/Insurance-Division",
+            "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Insurance-Division"
+        },
+        "BC_OfficeLocationsListId": [
+            110,
+            111,
+            112,
+            114,
+            115,
+            116,
+            165,
+            456,
+            458,
+            461,
+            460,
+            462,
+            463,
+            464,
+            465,
+            466,
+            467,
+            468,
+            469,
+            470,
+            471,
+            472,
+            473,
+            474,
+            475,
+            476
+        ],
+        "BH_SiteCode_LookupId": [
+            112,
+            165,
+            468
+        ],
+        "OData__ColorTag": null,
+        "ID": 1,
+        "Modified": "2023-02-21T21:14:38Z",
+        "Created": "2020-03-27T11:59:27Z",
+        "AuthorId": 1073741823,
+        "EditorId": 14,
+        "OData__UIVersionString": "1.0",
+        "Attachments": false,
+        "GUID": "a7317bae-9558-479d-8f1f-b7311ee7a1cb",
+        "BC_FacilityLinks": [
+            {
+                "Title": "Maintenance Request Form",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Banner-Post-Acute-Care/Resources/Pages/Maintenance-Request-Form.aspx",
+                "WindowTarget": "Same Window"
+            },
+            {
+                "Title": "CARE - Children at Risk Evaluation",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Banner-Post-Acute-Care/Resources/Pages/CARE-Children-at-Risk-Evaluation.aspx",
+                "WindowTarget": null
+            }
+        ]
+    },
+    {
+        "odata.type": "SP.Data.BC_x005f_FacilitiesListItem",
+        "odata.id": "2838faf2-d08c-46df-ae87-eb6f2c914d1c",
+        "odata.etag": "\"3\"",
+        "odata.editLink": "Web/Lists(guid'8569e85a-c826-4152-ba96-790eeebb5938')/Items(3)",
+        "FileSystemObjectType": 0,
+        "Id": 3,
+        "ServerRedirectedEmbedUri": null,
+        "ServerRedirectedEmbedUrl": "",
+        "ContentTypeId": "0x01003CA0504676C2AA4295EC7B99E16A04EE",
+        "Title": "Banner Heart Hospital",
+        "ComplianceAssetId": null,
+        "BC_FacilityImage": {
+            "Description": "https://testbhealth.sharepoint.com/:i:/r/sites/bannerconnect/Images_AK/Facilities/banner-heart-hospital.jpg?csf=1&e=9SzHG1",
+            "Url": "https://testbhealth.sharepoint.com/:i:/r/sites/bannerconnect/Images_AK/Facilities/banner-heart-hospital.jpg?csf=1&e=9SzHG1"
+        },
+        "isActive": true,
+        "BC_FacilityLink": {
+            "Description": "Banner Heart Hospital",
+            "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Heart-Hospital"
+        },
+        "BC_OfficeLocationsListId": [
+            477,
+            478,
+            479,
+            480,
+            108
+        ],
+        "BH_SiteCode_LookupId": [],
+        "OData__ColorTag": null,
+        "ID": 3,
+        "Modified": "2025-03-17T23:18:49Z",
+        "Created": "2020-03-27T11:59:28Z",
+        "AuthorId": 1073741823,
+        "EditorId": 6,
+        "OData__UIVersionString": "1.0",
+        "Attachments": false,
+        "GUID": "30bfc1b5-3050-43bd-9c54-cb6d6de8fcf8",
+        "BC_FacilityLinks": [
+            {
+                "Title": "On Call Schedules",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Heart-Hospital/Pages/On-Call-Schedules-Heart-Hospital.aspx",
+                "WindowTarget": "Same Window"
+            },
+            {
+                "Title": "Daily Patient List",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Heart-Hospital/Resources/Pages/Daily-Patient-List-Heart-Hospital.aspx",
+                "WindowTarget": null
+            },
+            {
+                "Title": "Heart Deli",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Heart-Hospital/Pages/Banner-Heart-Deli.aspx",
+                "WindowTarget": "Same Window"
+            }
+        ]
+    },
+    {
+        "odata.type": "SP.Data.BC_x005f_FacilitiesListItem",
+        "odata.id": "ab076f18-2a50-474a-9568-c36811ed7d9b",
+        "odata.etag": "\"3\"",
+        "odata.editLink": "Web/Lists(guid'8569e85a-c826-4152-ba96-790eeebb5938')/Items(4)",
+        "FileSystemObjectType": 0,
+        "Id": 4,
+        "ServerRedirectedEmbedUri": null,
+        "ServerRedirectedEmbedUrl": "",
+        "ContentTypeId": "0x01003CA0504676C2AA4295EC7B99E16A04EE",
+        "Title": "Banner Plans and Networks",
+        "ComplianceAssetId": null,
+        "BC_FacilityImage": {
+            "Description": "https://testbhealth.sharepoint.com/:i:/r/sites/bannerconnect/Images_AK/Facilities/avatar_location1.jpg?csf=1&e=pjlivH",
+            "Url": "https://testbhealth.sharepoint.com/:i:/r/sites/bannerconnect/Images_AK/Facilities/avatar_location1.jpg?csf=1&e=pjlivH"
+        },
+        "isActive": true,
+        "BC_FacilityLink": {
+            "Description": "https://testbhealth.sharepoint.com/sites/BannerConnect/Insurance-Division",
+            "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Insurance-Division"
+        },
+        "BC_OfficeLocationsListId": [
+            176,
+            177,
+            319,
+            320
+        ],
+        "BH_SiteCode_LookupId": [],
+        "OData__ColorTag": null,
+        "ID": 4,
+        "Modified": "2025-03-17T23:19:20Z",
+        "Created": "2020-03-27T11:59:28Z",
+        "AuthorId": 1073741823,
+        "EditorId": 6,
+        "OData__UIVersionString": "1.0",
+        "Attachments": false,
+        "GUID": "054ccd92-64f7-4dbc-81f5-195f6f53583d",
+        "BC_FacilityLinks": [
+            {
+                "Title": "Baywood Departments",
+                "Url": "http://intranet.bhs.bannerhealth.com/Baywood/Departments/?clicksrc=ewLeftNav",
+                "WindowTarget": "Same Window"
+            }
+        ]
+    },
+    {
+        "odata.type": "SP.Data.BC_x005f_FacilitiesListItem",
+        "odata.id": "4f4731d6-00f1-41cc-a02c-5ff130550bd3",
+        "odata.etag": "\"3\"",
+        "odata.editLink": "Web/Lists(guid'8569e85a-c826-4152-ba96-790eeebb5938')/Items(7)",
+        "FileSystemObjectType": 0,
+        "Id": 7,
+        "ServerRedirectedEmbedUri": null,
+        "ServerRedirectedEmbedUrl": "",
+        "ContentTypeId": "0x01003CA0504676C2AA4295EC7B99E16A04EE",
+        "Title": "University Medical Center - Phoenix",
+        "ComplianceAssetId": null,
+        "BC_FacilityImage": {
+            "Description": "https://testbhealth.sharepoint.com/:i:/r/sites/bannerconnect/Images_AK/Facilities/banner-university-medical-center-phoenix.jpg?csf=1&e=MDAPhw",
+            "Url": "https://testbhealth.sharepoint.com/:i:/r/sites/bannerconnect/Images_AK/Facilities/banner-university-medical-center-phoenix.jpg?csf=1&e=MDAPhw"
+        },
+        "isActive": true,
+        "BC_FacilityLink": {
+            "Description": "University Medical Center - Phoenix",
+            "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/BUMCP"
+        },
+        "BC_OfficeLocationsListId": [
+            2,
+            7,
+            12,
+            22,
+            202,
+            203,
+            205,
+            206,
+            221,
+            222,
+            223,
+            226,
+            227,
+            228,
+            259,
+            335,
+            336,
+            337,
+            341,
+            348,
+            447,
+            656,
+            657,
+            658,
+            659,
+            660,
+            661,
+            662,
+            664,
+            666,
+            665,
+            667,
+            668,
+            669,
+            670,
+            671,
+            672,
+            673,
+            674,
+            343,
+            675,
+            676,
+            677
+        ],
+        "BH_SiteCode_LookupId": [
+            230
+        ],
+        "OData__ColorTag": null,
+        "ID": 7,
+        "Modified": "2025-03-17T23:19:27Z",
+        "Created": "2020-03-27T11:59:29Z",
+        "AuthorId": 1073741823,
+        "EditorId": 6,
+        "OData__UIVersionString": "1.0",
+        "Attachments": false,
+        "GUID": "41fac562-dddb-4bfe-9f7b-7ac01b45c6ba",
+        "BC_FacilityLinks": [
+            {
+                "Title": "iService Desk",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Facilities/Pages/TMA-Service-and-Repair-Requests.aspx",
+                "WindowTarget": "Same Window"
+            },
+            {
+                "Title": "Culinary and Nutrition",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/BUMCP/Pages/Culinary-and-Nutrition-BUMCP.aspx",
+                "WindowTarget": "Same Window"
+            },
+            {
+                "Title": " On Call Schedules",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/BUMCP/Pages/On-Call-Schedules.aspx",
+                "WindowTarget": "Same Window"
+            },
+            {
+                "Title": "Pharmacy Services",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/BUMCP/Departments/Pages/Pharmacy-Services.aspx",
+                "WindowTarget": "Same Window"
+            },
+            {
+                "Title": "Medical Staff Services",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/BUMCP/Departments/Pages/Medical-Staff-Services.aspx",
+                "WindowTarget": "Same Window"
+            }
+        ]
+    },
+    {
+        "odata.type": "SP.Data.BC_x005f_FacilitiesListItem",
+        "odata.id": "a5cd6f8d-a284-4116-b97a-faf4ad1e0c9f",
+        "odata.etag": "\"3\"",
+        "odata.editLink": "Web/Lists(guid'8569e85a-c826-4152-ba96-790eeebb5938')/Items(8)",
+        "FileSystemObjectType": 0,
+        "Id": 8,
+        "ServerRedirectedEmbedUri": null,
+        "ServerRedirectedEmbedUrl": "",
+        "ContentTypeId": "0x01003CA0504676C2AA4295EC7B99E16A04EE",
+        "Title": "University Medical Center - Tucson",
+        "ComplianceAssetId": null,
+        "BC_FacilityImage": {
+            "Description": "https://testbhealth.sharepoint.com/:i:/r/sites/bannerconnect/Images_AK/Facilities/banner-university-medical-center-tucson.jpg?csf=1&e=5dlpiW",
+            "Url": "https://testbhealth.sharepoint.com/:i:/r/sites/bannerconnect/Images_AK/Facilities/banner-university-medical-center-tucson.jpg?csf=1&e=5dlpiW"
+        },
+        "isActive": true,
+        "BC_FacilityLink": {
+            "Description": "University Medical Center - Tucson",
+            "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/BUMCTS"
+        },
+        "BC_OfficeLocationsListId": [
+            678,
+            5,
+            10,
+            11,
+            679,
+            647,
+            680,
+            212,
+            225,
+            229,
+            681,
+            664,
+            683,
+            684,
+            685,
+            686,
+            687,
+            688,
+            689,
+            690,
+            691,
+            692,
+            344,
+            693,
+            346,
+            695,
+            696,
+            697,
+            698,
+            699,
+            700,
+            701,
+            469,
+            702,
+            703,
+            704,
+            705
+        ],
+        "BH_SiteCode_LookupId": [
+            684
+        ],
+        "OData__ColorTag": null,
+        "ID": 8,
+        "Modified": "2025-03-17T23:19:35Z",
+        "Created": "2020-03-27T11:59:30Z",
+        "AuthorId": 1073741823,
+        "EditorId": 6,
+        "OData__UIVersionString": "1.0",
+        "Attachments": false,
+        "GUID": "56baa37e-56f9-4329-8737-5c49b971aad4",
+        "BC_FacilityLinks": [
+            {
+                "Title": "On Call Schedules",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/BUMCTS/Pages/On-Call-Schedules-BUMCTS.aspx",
+                "WindowTarget": "Same Window"
+            },
+            {
+                "Title": "Cafeteria News",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/BUMCTS/Pages/BUMCTS-Cafeteria-News.aspx",
+                "WindowTarget": "Same Window"
+            },
+            {
+                "Title": "Journey to Zero Harm: BUMCTS Clinical Resource Hub",
+                "Url": "https://testbhealth.sharepoint.com/teams/BUMCTSJourneytoZeroHarm",
+                "WindowTarget": "New Window"
+            },
+            {
+                "Title": "Nutrition Services ",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/BUMCTS/Departments/Pages/Nutrition-Services-BUMCTS.aspx",
+                "WindowTarget": "Same Window"
+            },
+            {
+                "Title": "Pharmacy",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/BUMCTS/Departments/Pages/Pharmacy-BUMCTS.aspx",
+                "WindowTarget": "Same Window"
+            }
+        ]
+    },
+    {
+        "odata.type": "SP.Data.BC_x005f_FacilitiesListItem",
+        "odata.id": "bd4943e9-89bf-4bd7-850f-2c0953fe1bbe",
+        "odata.etag": "\"3\"",
+        "odata.editLink": "Web/Lists(guid'8569e85a-c826-4152-ba96-790eeebb5938')/Items(9)",
+        "FileSystemObjectType": 0,
+        "Id": 9,
+        "ServerRedirectedEmbedUri": null,
+        "ServerRedirectedEmbedUrl": "",
+        "ContentTypeId": "0x01003CA0504676C2AA4295EC7B99E16A04EE",
+        "Title": "Baywood Medical Center",
+        "ComplianceAssetId": null,
+        "BC_FacilityImage": {
+            "Description": "https://testbhealth.sharepoint.com/:i:/r/sites/bannerconnect/Images_AK/Facilities/banner-baywood-medical-center.jpg?csf=1&e=amw3KY",
+            "Url": "https://testbhealth.sharepoint.com/:i:/r/sites/bannerconnect/Images_AK/Facilities/banner-baywood-medical-center.jpg?csf=1&e=amw3KY"
+        },
+        "isActive": true,
+        "BC_FacilityLink": {
+            "Description": "Baywood Medical Center",
+            "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Baywood"
+        },
+        "BC_OfficeLocationsListId": [
+            481,
+            482,
+            454,
+            15,
+            16,
+            483,
+            484,
+            455,
+            478,
+            485,
+            231,
+            486,
+            236,
+            487
+        ],
+        "BH_SiteCode_LookupId": [
+            15
+        ],
+        "OData__ColorTag": null,
+        "ID": 9,
+        "Modified": "2025-03-17T23:19:43Z",
+        "Created": "2020-03-27T11:59:30Z",
+        "AuthorId": 1073741823,
+        "EditorId": 6,
+        "OData__UIVersionString": "1.0",
+        "Attachments": false,
+        "GUID": "0e83d49b-38bd-4cda-bdb9-e8931110f02c",
+        "BC_FacilityLinks": [
+            {
+                "Title": "Pharmacy",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Baywood/Departments/Pages/Pharmacy-Baywood.aspx",
+                "WindowTarget": null
+            },
+            {
+                "Title": "Baywood Bistro",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Baywood/Pages/-Baywood-Bistro.aspx",
+                "WindowTarget": "Same Window"
+            },
+            {
+                "Title": "On-Call Schedules",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Baywood/Pages/On-Call-Schedules.aspx",
+                "WindowTarget": "Same Window"
+            },
+            {
+                "Title": "Daily Patient List",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Baywood/Resources/Pages/Daily-Patient-List-Baywood.aspx",
+                "WindowTarget": "Same Window"
+            }
+        ]
+    },
+    {
+        "odata.type": "SP.Data.BC_x005f_FacilitiesListItem",
+        "odata.id": "33527a89-4814-4a2a-9a80-9be19cb485d9",
+        "odata.etag": "\"2\"",
+        "odata.editLink": "Web/Lists(guid'8569e85a-c826-4152-ba96-790eeebb5938')/Items(10)",
+        "FileSystemObjectType": 0,
+        "Id": 10,
+        "ServerRedirectedEmbedUri": null,
+        "ServerRedirectedEmbedUrl": "",
+        "ContentTypeId": "0x01003CA0504676C2AA4295EC7B99E16A04EE",
+        "Title": "Behavioral Health Hospital",
+        "ComplianceAssetId": null,
+        "BC_FacilityImage": {
+            "Description": "https://testbhealth.sharepoint.com/sites/BannerConnect/Images_AK/Facilities/banner-behavioral-health-hospital%20(1).jpg",
+            "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Images_AK/Facilities/banner-behavioral-health-hospital%20(1).jpg"
+        },
+        "isActive": true,
+        "BC_FacilityLink": {
+            "Description": "Behavioral Health Hospital",
+            "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Behavioral-Health"
+        },
+        "BC_OfficeLocationsListId": [
+            17,
+            18,
+            488,
+            489,
+            490,
+            491
+        ],
+        "BH_SiteCode_LookupId": [
+            491,
+            18
+        ],
+        "OData__ColorTag": null,
+        "ID": 10,
+        "Modified": "2021-08-27T17:25:47Z",
+        "Created": "2020-03-27T11:59:30Z",
+        "AuthorId": 1073741823,
+        "EditorId": 13,
+        "OData__UIVersionString": "1.0",
+        "Attachments": false,
+        "GUID": "14522af0-4773-48a6-b4c5-418860681f92",
+        "BC_FacilityLinks": [
+            {
+                "Title": "BBHH Staffing Sheets",
+                "Url": "https://tinyurl.com/ptuyfhxr",
+                "WindowTarget": "Same Window"
+            },
+            {
+                "Title": "Nursing Staff SharePoint",
+                "Url": "https://collaboration.bannerhealth.com/clinical/nursing/NrsngStaffSP/default.aspx",
+                "WindowTarget": "Same Window"
+            },
+            {
+                "Title": "On Call Schedule for BBHH",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Behavioral-Health/Pages/On-Call-Schedules.aspx#",
+                "WindowTarget": "Same Window"
+            },
+            {
+                "Title": "Camelback Cafe Menu",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Behavioral-Health/pages/Camelback-Cafe.aspx",
+                "WindowTarget": "Same Window"
+            }
+        ]
+    },
+    {
+        "odata.type": "SP.Data.BC_x005f_FacilitiesListItem",
+        "odata.id": "13cf6cdf-d43f-46ab-8373-7e04b3680570",
+        "odata.etag": "\"3\"",
+        "odata.editLink": "Web/Lists(guid'8569e85a-c826-4152-ba96-790eeebb5938')/Items(11)",
+        "FileSystemObjectType": 0,
+        "Id": 11,
+        "ServerRedirectedEmbedUri": null,
+        "ServerRedirectedEmbedUrl": "",
+        "ContentTypeId": "0x01003CA0504676C2AA4295EC7B99E16A04EE",
+        "Title": "Boswell Medical Center",
+        "ComplianceAssetId": null,
+        "BC_FacilityImage": {
+            "Description": "https://testbhealth.sharepoint.com/:i:/r/sites/bannerconnect/Images_AK/Facilities/banner-boswell-medical-center.jpg?csf=1&e=ndRnoe",
+            "Url": "https://testbhealth.sharepoint.com/:i:/r/sites/bannerconnect/Images_AK/Facilities/banner-boswell-medical-center.jpg?csf=1&e=ndRnoe"
+        },
+        "isActive": true,
+        "BC_FacilityLink": {
+            "Description": "Boswell Medical Center",
+            "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Boswell"
+        },
+        "BC_OfficeLocationsListId": [
+            20,
+            21,
+            328,
+            329,
+            492,
+            493,
+            494,
+            495,
+            496,
+            497
+        ],
+        "BH_SiteCode_LookupId": [
+            20
+        ],
+        "OData__ColorTag": null,
+        "ID": 11,
+        "Modified": "2025-03-17T23:19:56Z",
+        "Created": "2020-03-27T11:59:31Z",
+        "AuthorId": 1073741823,
+        "EditorId": 6,
+        "OData__UIVersionString": "1.0",
+        "Attachments": false,
+        "GUID": "a6325f5d-b63a-4689-8a70-cf23192cdad6",
+        "BC_FacilityLinks": [
+            {
+                "Title": "Culinary & Nutrition Services ",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Boswell/Pages/Boswell-Retail-Dining.aspx",
+                "WindowTarget": "Same Window"
+            },
+            {
+                "Title": "iService Desk",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Facilities/Pages/TMA-Service-and-Repair-Requests.aspx",
+                "WindowTarget": "Same Window"
+            },
+            {
+                "Title": "Medical Staff Services Boswell",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Boswell/Pages/Med-Staff-Services.aspx",
+                "WindowTarget": "Same Window"
+            },
+            {
+                "Title": "Pharmacy",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Boswell/Departments/Pages/Pharmacy.aspx",
+                "WindowTarget": "Same Window"
+            },
+            {
+                "Title": "Case Management",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Boswell/Departments/Pages/Case-Management.aspx",
+                "WindowTarget": "Same Window"
+            }
+        ]
+    },
+    {
+        "odata.type": "SP.Data.BC_x005f_FacilitiesListItem",
+        "odata.id": "2458706b-2c30-4bde-af1f-6a58c9642351",
+        "odata.etag": "\"3\"",
+        "odata.editLink": "Web/Lists(guid'8569e85a-c826-4152-ba96-790eeebb5938')/Items(12)",
+        "FileSystemObjectType": 0,
+        "Id": 12,
+        "ServerRedirectedEmbedUri": null,
+        "ServerRedirectedEmbedUrl": "",
+        "ContentTypeId": "0x01003CA0504676C2AA4295EC7B99E16A04EE",
+        "Title": "Casa Grande Medical Center",
+        "ComplianceAssetId": null,
+        "BC_FacilityImage": {
+            "Description": "https://testbhealth.sharepoint.com/:i:/r/sites/bannerconnect/Images_AK/Facilities/banner-casa-grande-medical-center.jpg?csf=1&e=pU54T3",
+            "Url": "https://testbhealth.sharepoint.com/:i:/r/sites/bannerconnect/Images_AK/Facilities/banner-casa-grande-medical-center.jpg?csf=1&e=pU54T3"
+        },
+        "isActive": true,
+        "BC_FacilityLink": {
+            "Description": "Casa Grande Medical Center",
+            "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Casa-Grande"
+        },
+        "BC_OfficeLocationsListId": [
+            23,
+            25,
+            27,
+            28,
+            350,
+            498,
+            500,
+            501
+        ],
+        "BH_SiteCode_LookupId": [
+            25
+        ],
+        "OData__ColorTag": null,
+        "ID": 12,
+        "Modified": "2025-03-17T23:20:04Z",
+        "Created": "2020-03-27T11:59:31Z",
+        "AuthorId": 1073741823,
+        "EditorId": 6,
+        "OData__UIVersionString": "1.0",
+        "Attachments": false,
+        "GUID": "ec62cece-a332-45e6-8380-9081b19c5dfa",
+        "BC_FacilityLinks": [
+            {
+                "Title": "On Call Schedules",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Casa-Grande/Departments/Pages/Medical-Staff-Services.aspx",
+                "WindowTarget": "Same Window"
+            },
+            {
+                "Title": "Cafe Menu",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Casa-Grande/Pages/Cafeteria-Menu.aspx",
+                "WindowTarget": "Same Window"
+            },
+            {
+                "Title": "iService Desk",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Facilities/Pages/TMA-Service-and-Repair-Requests.aspx",
+                "WindowTarget": "Same Window"
+            },
+            {
+                "Title": "CMO Connect",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Casa-Grande/Pages/CMO-Connect.aspx",
+                "WindowTarget": "Same Window"
+            },
+            {
+                "Title": " Medical Staff Services",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Casa-Grande/Departments/Pages/Medical-Staff-Services.aspx",
+                "WindowTarget": "Same Window"
+            }
+        ]
+    },
+    {
+        "odata.type": "SP.Data.BC_x005f_FacilitiesListItem",
+        "odata.id": "86a8575b-c66d-4d96-8611-2a0f8373e364",
+        "odata.etag": "\"3\"",
+        "odata.editLink": "Web/Lists(guid'8569e85a-c826-4152-ba96-790eeebb5938')/Items(13)",
+        "FileSystemObjectType": 0,
+        "Id": 13,
+        "ServerRedirectedEmbedUri": null,
+        "ServerRedirectedEmbedUrl": "",
+        "ContentTypeId": "0x01003CA0504676C2AA4295EC7B99E16A04EE",
+        "Title": "Churchill Community Hospital",
+        "ComplianceAssetId": null,
+        "BC_FacilityImage": {
+            "Description": "https://testbhealth.sharepoint.com/:i:/r/sites/bannerconnect/Images_AK/Facilities/banner-churchill-community-hospital.jpg?csf=1&e=DGPmRq",
+            "Url": "https://testbhealth.sharepoint.com/:i:/r/sites/bannerconnect/Images_AK/Facilities/banner-churchill-community-hospital.jpg?csf=1&e=DGPmRq"
+        },
+        "isActive": true,
+        "BC_FacilityLink": {
+            "Description": "Churchill Community Hospital",
+            "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Churchill"
+        },
+        "BC_OfficeLocationsListId": [
+            31,
+            32,
+            502,
+            503
+        ],
+        "BH_SiteCode_LookupId": [
+            32
+        ],
+        "OData__ColorTag": null,
+        "ID": 13,
+        "Modified": "2025-03-17T23:20:10Z",
+        "Created": "2020-03-27T11:59:31Z",
+        "AuthorId": 1073741823,
+        "EditorId": 6,
+        "OData__UIVersionString": "1.0",
+        "Attachments": false,
+        "GUID": "ac770ee9-783d-4c86-8f23-3d94b33c8da5",
+        "BC_FacilityLinks": [
+            {
+                "Title": "Human Resources",
+                "Url": "http://intranet.bhs.bannerhealth.com/Banner+Desert/Departments/Human+Resources.htm?clicksrc=ewLeftNav",
+                "WindowTarget": "Same Window"
+            },
+            {
+                "Title": "On Call Schedules",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Churchill/Pages/On-Call.aspx",
+                "WindowTarget": "Same Window"
+            }
+        ]
+    },
+    {
+        "odata.type": "SP.Data.BC_x005f_FacilitiesListItem",
+        "odata.id": "874648c3-d84e-40c4-ae3b-edd7934bdb34",
+        "odata.etag": "\"3\"",
+        "odata.editLink": "Web/Lists(guid'8569e85a-c826-4152-ba96-790eeebb5938')/Items(15)",
+        "FileSystemObjectType": 0,
+        "Id": 15,
+        "ServerRedirectedEmbedUri": null,
+        "ServerRedirectedEmbedUrl": "",
+        "ContentTypeId": "0x01003CA0504676C2AA4295EC7B99E16A04EE",
+        "Title": "Corporate Offices",
+        "ComplianceAssetId": null,
+        "BC_FacilityImage": {
+            "Description": "https://testbhealth.sharepoint.com/:i:/r/sites/bannerconnect/Images_AK/Facilities/banner-corporate-center-phoenix.jpg?csf=1&e=OPzEb5",
+            "Url": "https://testbhealth.sharepoint.com/:i:/r/sites/bannerconnect/Images_AK/Facilities/banner-corporate-center-phoenix.jpg?csf=1&e=OPzEb5"
+        },
+        "isActive": true,
+        "BC_FacilityLink": {
+            "Description": "Corporate Offices",
+            "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Corporate"
+        },
+        "BC_OfficeLocationsListId": [
+            1,
+            34,
+            35,
+            36,
+            37,
+            38,
+            39,
+            40,
+            41,
+            42,
+            43,
+            44,
+            45,
+            46,
+            47,
+            48,
+            49,
+            50,
+            51,
+            52,
+            53,
+            54,
+            55,
+            82,
+            83,
+            86,
+            104,
+            105,
+            106,
+            132,
+            158,
+            162,
+            163,
+            180,
+            181,
+            182,
+            183,
+            184,
+            185,
+            186,
+            187,
+            189,
+            190,
+            220,
+            240,
+            241,
+            242,
+            243,
+            274,
+            292,
+            352,
+            353,
+            370,
+            371,
+            417,
+            442,
+            445,
+            452,
+            629,
+            630,
+            631,
+            633,
+            634,
+            635,
+            636,
+            637,
+            638,
+            639,
+            640,
+            641,
+            642,
+            643,
+            644,
+            645,
+            646,
+            647,
+            648,
+            649,
+            650,
+            651,
+            652,
+            653
+        ],
+        "BH_SiteCode_LookupId": [
+            44
+        ],
+        "OData__ColorTag": null,
+        "ID": 15,
+        "Modified": "2025-03-17T23:20:17Z",
+        "Created": "2020-03-27T11:59:32Z",
+        "AuthorId": 1073741823,
+        "EditorId": 6,
+        "OData__UIVersionString": "1.0",
+        "Attachments": false,
+        "GUID": "b1873dff-dbc1-4ef7-97e5-7f86640fa923",
+        "BC_FacilityLinks": []
+    },
+    {
+        "odata.type": "SP.Data.BC_x005f_FacilitiesListItem",
+        "odata.id": "3ab555d4-53bd-4fe9-8859-3bdceb69fb65",
+        "odata.etag": "\"3\"",
+        "odata.editLink": "Web/Lists(guid'8569e85a-c826-4152-ba96-790eeebb5938')/Items(16)",
+        "FileSystemObjectType": 0,
+        "Id": 16,
+        "ServerRedirectedEmbedUri": null,
+        "ServerRedirectedEmbedUrl": "",
+        "ContentTypeId": "0x01003CA0504676C2AA4295EC7B99E16A04EE",
+        "Title": "Del E Webb Medical Center",
+        "ComplianceAssetId": null,
+        "BC_FacilityImage": {
+            "Description": "https://testbhealth.sharepoint.com/:i:/r/sites/bannerconnect/Images_AK/Facilities/banner-del-e-webb-medical-center.jpg?csf=1&e=wg5G3c",
+            "Url": "https://testbhealth.sharepoint.com/:i:/r/sites/bannerconnect/Images_AK/Facilities/banner-del-e-webb-medical-center.jpg?csf=1&e=wg5G3c"
+        },
+        "isActive": true,
+        "BC_FacilityLink": {
+            "Description": "Del E Webb Medical Center",
+            "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Del-E-Webb"
+        },
+        "BC_OfficeLocationsListId": [
+            57,
+            59,
+            504,
+            505,
+            506
+        ],
+        "BH_SiteCode_LookupId": [
+            59
+        ],
+        "OData__ColorTag": null,
+        "ID": 16,
+        "Modified": "2025-03-17T23:20:45Z",
+        "Created": "2020-03-27T11:59:32Z",
+        "AuthorId": 1073741823,
+        "EditorId": 6,
+        "OData__UIVersionString": "1.0",
+        "Attachments": false,
+        "GUID": "3ce435fa-64e8-4119-884e-9354556d5815",
+        "BC_FacilityLinks": [
+            {
+                "Title": "On Call Schedules",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Del-E-Webb/pages/On-Call-Schedules.aspx",
+                "WindowTarget": "Same Window"
+            },
+            {
+                "Title": "Culinary & Nutrition Services ",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Del-E-Webb/Pages/Culinary-Services.aspx",
+                "WindowTarget": "Same Window"
+            },
+            {
+                "Title": "iService Desk",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Facilities/Pages/TMA-Service-and-Repair-Requests.aspx",
+                "WindowTarget": "Same Window"
+            },
+            {
+                "Title": "Med Staff Services",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Del-E-Webb/Depts-Resources/Pages/Med-Staff-Services-.aspx",
+                "WindowTarget": "Same Window"
+            },
+            {
+                "Title": "Pharmacy ",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Del-E-Webb/Depts-Resources/Pages/Pharmacy-Del-E-Webb.aspx",
+                "WindowTarget": "Same Window"
+            }
+        ]
+    },
+    {
+        "odata.type": "SP.Data.BC_x005f_FacilitiesListItem",
+        "odata.id": "312d1266-3f16-4e3b-8c91-2085757934d6",
+        "odata.etag": "\"2\"",
+        "odata.editLink": "Web/Lists(guid'8569e85a-c826-4152-ba96-790eeebb5938')/Items(17)",
+        "FileSystemObjectType": 0,
+        "Id": 17,
+        "ServerRedirectedEmbedUri": null,
+        "ServerRedirectedEmbedUrl": "",
+        "ContentTypeId": "0x01003CA0504676C2AA4295EC7B99E16A04EE",
+        "Title": "Desert Medical Center",
+        "ComplianceAssetId": null,
+        "BC_FacilityImage": {
+            "Description": "https://testbhealth.sharepoint.com/sites/BannerConnect/Images_AK/Facilities/cardon-childrens-medical-center.jpg",
+            "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Images_AK/Facilities/cardon-childrens-medical-center.jpg"
+        },
+        "isActive": true,
+        "BC_FacilityLink": {
+            "Description": "Desert Medical Center",
+            "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Desert-Cardon"
+        },
+        "BC_OfficeLocationsListId": [
+            62,
+            63,
+            64,
+            349,
+            706,
+            707,
+            708,
+            709,
+            710,
+            711,
+            712,
+            713,
+            714,
+            715,
+            716,
+            717,
+            718,
+            719,
+            720,
+            721,
+            722,
+            723,
+            724,
+            725,
+            726,
+            727,
+            728,
+            729,
+            730,
+            731,
+            732,
+            733,
+            734,
+            735,
+            736,
+            737
+        ],
+        "BH_SiteCode_LookupId": [
+            62,
+            709,
+            711,
+            720
+        ],
+        "OData__ColorTag": null,
+        "ID": 17,
+        "Modified": "2021-07-14T22:40:28Z",
+        "Created": "2020-03-27T11:59:33Z",
+        "AuthorId": 1073741823,
+        "EditorId": 12,
+        "OData__UIVersionString": "1.0",
+        "Attachments": false,
+        "GUID": "5d461ef5-3150-445d-ad3d-323e0e139a45",
+        "BC_FacilityLinks": [
+            {
+                "Title": "Bistro Menu",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Desert-Cardon/Pages/Bistro-Menu.aspx",
+                "WindowTarget": "Same Window"
+            },
+            {
+                "Title": "On Call Schedules",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Desert-Cardon/Pages/On-Call-Schedules.aspx",
+                "WindowTarget": "Same Window"
+            },
+            {
+                "Title": "Pediatric Sites",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Desert-Cardon/Banner-Childrens/Pages/Pediatric-Sites.aspx",
+                "WindowTarget": "Same Window"
+            },
+            {
+                "Title": "iService Desk",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Facilities/Pages/TMA-Service-and-Repair-Requests.aspx",
+                "WindowTarget": "Same Window"
+            },
+            {
+                "Title": "Pharmacy",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Desert-Cardon/Departments/Pages/Pharmacy-Desert-and-Cardon-Childrens.aspx",
+                "WindowTarget": "Same Window"
+            }
+        ]
+    },
+    {
+        "odata.type": "SP.Data.BC_x005f_FacilitiesListItem",
+        "odata.id": "8f269ae2-e6e8-4084-af3a-6b1280c4d820",
+        "odata.etag": "\"3\"",
+        "odata.editLink": "Web/Lists(guid'8569e85a-c826-4152-ba96-790eeebb5938')/Items(18)",
+        "FileSystemObjectType": 0,
+        "Id": 18,
+        "ServerRedirectedEmbedUri": null,
+        "ServerRedirectedEmbedUrl": "",
+        "ContentTypeId": "0x01003CA0504676C2AA4295EC7B99E16A04EE",
+        "Title": "East Morgan County Hospital",
+        "ComplianceAssetId": null,
+        "BC_FacilityImage": {
+            "Description": "https://testbhealth.sharepoint.com/:i:/r/sites/bannerconnect/Images_AK/Facilities/east-morgan-county-hospital.jpg?csf=1&e=eXNsfl",
+            "Url": "https://testbhealth.sharepoint.com/:i:/r/sites/bannerconnect/Images_AK/Facilities/east-morgan-county-hospital.jpg?csf=1&e=eXNsfl"
+        },
+        "isActive": true,
+        "BC_FacilityLink": {
+            "Description": "East Morgan County Hospital",
+            "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/East-Morgan"
+        },
+        "BC_OfficeLocationsListId": [
+            359,
+            360,
+            361,
+            507,
+            508
+        ],
+        "BH_SiteCode_LookupId": [
+            361
+        ],
+        "OData__ColorTag": null,
+        "ID": 18,
+        "Modified": "2025-03-17T23:20:59Z",
+        "Created": "2020-03-27T11:59:33Z",
+        "AuthorId": 1073741823,
+        "EditorId": 6,
+        "OData__UIVersionString": "1.0",
+        "Attachments": false,
+        "GUID": "9c2cbceb-f4de-45fa-ba1a-fe867de5a042",
+        "BC_FacilityLinks": [
+            {
+                "Title": "Employee Store for EMCH",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/East-Morgan/Resources/Pages/Employee-Store-for-EMCH.aspx",
+                "WindowTarget": "Same Window"
+            },
+            {
+                "Title": "Practitioner and Privileges",
+                "Url": "http://phx00689/PrivInq/msoPI.aspx",
+                "WindowTarget": "New Window"
+            },
+            {
+                "Title": "Bistro Menu",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/East-Morgan/Pages/EMCH-Bistro-Menu.aspx",
+                "WindowTarget": "Same Window"
+            },
+            {
+                "Title": "Phone List",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/East-Morgan/Resources/Pages/Phone-List-East-Morgan.aspx",
+                "WindowTarget": "Same Window"
+            }
+        ]
+    },
+    {
+        "odata.type": "SP.Data.BC_x005f_FacilitiesListItem",
+        "odata.id": "b88def49-c640-4155-b447-a5c223d146bf",
+        "odata.etag": "\"3\"",
+        "odata.editLink": "Web/Lists(guid'8569e85a-c826-4152-ba96-790eeebb5938')/Items(19)",
+        "FileSystemObjectType": 0,
+        "Id": 19,
+        "ServerRedirectedEmbedUri": null,
+        "ServerRedirectedEmbedUrl": "",
+        "ContentTypeId": "0x01003CA0504676C2AA4295EC7B99E16A04EE",
+        "Title": "Estrella Medical Center",
+        "ComplianceAssetId": null,
+        "BC_FacilityImage": {
+            "Description": "https://testbhealth.sharepoint.com/:i:/r/sites/bannerconnect/Images_AK/Facilities/banner-estrella-medical-center.jpg?csf=1&e=NdJt9U",
+            "Url": "https://testbhealth.sharepoint.com/:i:/r/sites/bannerconnect/Images_AK/Facilities/banner-estrella-medical-center.jpg?csf=1&e=NdJt9U"
+        },
+        "isActive": true,
+        "BC_FacilityLink": {
+            "Description": "Estrella Medical Center",
+            "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Estrella"
+        },
+        "BC_OfficeLocationsListId": [
+            67,
+            69,
+            308,
+            509,
+            510,
+            511,
+            512,
+            513,
+            514,
+            515,
+            516,
+            517,
+            518
+        ],
+        "BH_SiteCode_LookupId": [
+            67
+        ],
+        "OData__ColorTag": null,
+        "ID": 19,
+        "Modified": "2025-03-17T23:21:09Z",
+        "Created": "2020-03-27T11:59:33Z",
+        "AuthorId": 1073741823,
+        "EditorId": 6,
+        "OData__UIVersionString": "1.0",
+        "Attachments": false,
+        "GUID": "daa371c7-5b11-403c-ab4d-3c1f6d32f464",
+        "BC_FacilityLinks": [
+            {
+                "Title": "Pharmacy",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Estrella/Pages/Pharmacy.aspx",
+                "WindowTarget": "Same Window"
+            },
+            {
+                "Title": "On Call Schedule",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Estrella/Pages/On-Call-Schedules.aspx",
+                "WindowTarget": "Same Window"
+            },
+            {
+                "Title": "Cafe Menu",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Estrella/Culinary/Pages/Menu.aspx",
+                "WindowTarget": "Same Window"
+            },
+            {
+                "Title": "Estrella Directory",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Estrella/Resources/Pages/Directory.aspx",
+                "WindowTarget": "Same Window"
+            }
+        ]
+    },
+    {
+        "odata.type": "SP.Data.BC_x005f_FacilitiesListItem",
+        "odata.id": "220f63b0-f2f2-4396-8f84-55e0368e8227",
+        "odata.etag": "\"3\"",
+        "odata.editLink": "Web/Lists(guid'8569e85a-c826-4152-ba96-790eeebb5938')/Items(21)",
+        "FileSystemObjectType": 0,
+        "Id": 21,
+        "ServerRedirectedEmbedUri": null,
+        "ServerRedirectedEmbedUrl": "",
+        "ContentTypeId": "0x01003CA0504676C2AA4295EC7B99E16A04EE",
+        "Title": "Gateway Medical Center",
+        "ComplianceAssetId": null,
+        "BC_FacilityImage": {
+            "Description": "https://testbhealth.sharepoint.com/:i:/r/sites/bannerconnect/Images_AK/Facilities/banner-gateway-medical-center.jpg?csf=1&e=T5GQuF",
+            "Url": "https://testbhealth.sharepoint.com/:i:/r/sites/bannerconnect/Images_AK/Facilities/banner-gateway-medical-center.jpg?csf=1&e=T5GQuF"
+        },
+        "isActive": true,
+        "BC_FacilityLink": {
+            "Description": "Gateway Medical Center",
+            "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Gateway-Medical"
+        },
+        "BC_OfficeLocationsListId": [
+            73,
+            74,
+            75,
+            78,
+            132,
+            136,
+            519,
+            520,
+            521,
+            522,
+            523,
+            524,
+            525
+        ],
+        "BH_SiteCode_LookupId": [
+            75
+        ],
+        "OData__ColorTag": null,
+        "ID": 21,
+        "Modified": "2025-03-17T23:23:40Z",
+        "Created": "2020-03-27T11:59:34Z",
+        "AuthorId": 1073741823,
+        "EditorId": 6,
+        "OData__UIVersionString": "1.0",
+        "Attachments": false,
+        "GUID": "c0d4b52d-0675-4874-aeea-aa170a01db34",
+        "BC_FacilityLinks": [
+            {
+                "Title": "On Call Schedules",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Gateway-Medical/Pages/On-Call-Schedules.aspx",
+                "WindowTarget": "Same Window"
+            },
+            {
+                "Title": "iService Desk",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Facilities/Pages/TMA-Service-and-Repair-Requests.aspx",
+                "WindowTarget": "Same Window"
+            },
+            {
+                "Title": "Cafe Menu",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Gateway-Medical/Pages/Gateway-Cafe-Menu.aspx",
+                "WindowTarget": "Same Window"
+            },
+            {
+                "Title": "BGMC Staffing",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Gateway-Medical/Departments/Pages/BGMC-Staffing.aspx",
+                "WindowTarget": "Same Window"
+            },
+            {
+                "Title": "Medaptus",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Gateway-Medical/Departments/Pages/Medaptus.aspx",
+                "WindowTarget": "Same Window"
+            }
+        ]
+    },
+    {
+        "odata.type": "SP.Data.BC_x005f_FacilitiesListItem",
+        "odata.id": "1f01b57b-d461-4579-bf3d-fca8f5feb971",
+        "odata.etag": "\"3\"",
+        "odata.editLink": "Web/Lists(guid'8569e85a-c826-4152-ba96-790eeebb5938')/Items(22)",
+        "FileSystemObjectType": 0,
+        "Id": 22,
+        "ServerRedirectedEmbedUri": null,
+        "ServerRedirectedEmbedUrl": "",
+        "ContentTypeId": "0x01003CA0504676C2AA4295EC7B99E16A04EE",
+        "Title": "Goldfield Medical Center",
+        "ComplianceAssetId": null,
+        "BC_FacilityImage": {
+            "Description": "https://testbhealth.sharepoint.com/:i:/r/sites/bannerconnect/Images_AK/Facilities/banner-goldfield-medical-center.jpg?csf=1&e=2cT4wb",
+            "Url": "https://testbhealth.sharepoint.com/:i:/r/sites/bannerconnect/Images_AK/Facilities/banner-goldfield-medical-center.jpg?csf=1&e=2cT4wb"
+        },
+        "isActive": true,
+        "BC_FacilityLink": {
+            "Description": "Goldfield Medical Center",
+            "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Goldfield-Medical"
+        },
+        "BC_OfficeLocationsListId": [
+            526,
+            81
+        ],
+        "BH_SiteCode_LookupId": [
+            81
+        ],
+        "OData__ColorTag": null,
+        "ID": 22,
+        "Modified": "2025-03-17T23:23:50Z",
+        "Created": "2020-03-27T11:59:34Z",
+        "AuthorId": 1073741823,
+        "EditorId": 6,
+        "OData__UIVersionString": "1.0",
+        "Attachments": false,
+        "GUID": "559fb434-7d61-4342-93e4-ab560ccc29bd",
+        "BC_FacilityLinks": [
+            {
+                "Title": "Service Excellence",
+                "Url": "http://intranet.bhs.bannerhealth.com/BHSystem/Patient%20Experience/_index.htm",
+                "WindowTarget": "Same Window"
+            },
+            {
+                "Title": "Pharmacy",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Goldfield-Medical/Pages/Pharmacy-Goldfield.aspx",
+                "WindowTarget": "Same Window"
+            },
+            {
+                "Title": "Call Schedule",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Goldfield-Medical/Pages/Call-Schedule.aspx",
+                "WindowTarget": "Same Window"
+            }
+        ]
+    },
+    {
+        "odata.type": "SP.Data.BC_x005f_FacilitiesListItem",
+        "odata.id": "02436202-381a-49a4-9172-0ffff1a5e6db",
+        "odata.etag": "\"3\"",
+        "odata.editLink": "Web/Lists(guid'8569e85a-c826-4152-ba96-790eeebb5938')/Items(23)",
+        "FileSystemObjectType": 0,
+        "Id": 23,
+        "ServerRedirectedEmbedUri": null,
+        "ServerRedirectedEmbedUrl": "",
+        "ContentTypeId": "0x01003CA0504676C2AA4295EC7B99E16A04EE",
+        "Title": "Ironwood Medical Center",
+        "ComplianceAssetId": null,
+        "BC_FacilityImage": {
+            "Description": "https://testbhealth.sharepoint.com/:i:/r/sites/bannerconnect/Images_AK/Facilities/banner-ironwood-medical-center.jpg?csf=1&e=Sy62eo",
+            "Url": "https://testbhealth.sharepoint.com/:i:/r/sites/bannerconnect/Images_AK/Facilities/banner-ironwood-medical-center.jpg?csf=1&e=Sy62eo"
+        },
+        "isActive": true,
+        "BC_FacilityLink": {
+            "Description": "Ironwood Medical Center",
+            "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Ironwood-Medical"
+        },
+        "BC_OfficeLocationsListId": [
+            129,
+            130,
+            527,
+            528,
+            529,
+            530,
+            531,
+            532
+        ],
+        "BH_SiteCode_LookupId": [
+            129
+        ],
+        "OData__ColorTag": null,
+        "ID": 23,
+        "Modified": "2025-03-17T23:23:57Z",
+        "Created": "2020-03-27T11:59:35Z",
+        "AuthorId": 1073741823,
+        "EditorId": 6,
+        "OData__UIVersionString": "1.0",
+        "Attachments": false,
+        "GUID": "ce66755c-488e-4764-9423-c307ac99608f",
+        "BC_FacilityLinks": [
+            {
+                "Title": "Cafe Menu ",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Ironwood-Medical/Pages/Cafe-Menu-Ironwood.aspx",
+                "WindowTarget": "Same Window"
+            },
+            {
+                "Title": "Pharmacy",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Ironwood-Medical/Departments/Pages/Pharmacy.aspx",
+                "WindowTarget": "Same Window"
+            },
+            {
+                "Title": "On Call Schedules",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Ironwood-Medical/Pages/On-Call-Schedules-Ironwood.aspx",
+                "WindowTarget": "Same Window"
+            },
+            {
+                "Title": "MOSU",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Ironwood-Medical/Departments/Pages/Multi-Organizational-Service-Unit-Ironwood.aspx",
+                "WindowTarget": "Same Window"
+            },
+            {
+                "Title": "iService Desk",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Facilities/Pages/TMA-Service-and-Repair-Requests.aspx",
+                "WindowTarget": "Same Window"
+            }
+        ]
+    },
+    {
+        "odata.type": "SP.Data.BC_x005f_FacilitiesListItem",
+        "odata.id": "667fb87e-c752-4346-83ea-d88f8f4fe8ed",
+        "odata.etag": "\"3\"",
+        "odata.editLink": "Web/Lists(guid'8569e85a-c826-4152-ba96-790eeebb5938')/Items(24)",
+        "FileSystemObjectType": 0,
+        "Id": 24,
+        "ServerRedirectedEmbedUri": null,
+        "ServerRedirectedEmbedUrl": "",
+        "ContentTypeId": "0x01003CA0504676C2AA4295EC7B99E16A04EE",
+        "Title": "Lassen Medical Center",
+        "ComplianceAssetId": null,
+        "BC_FacilityImage": {
+            "Description": "https://testbhealth.sharepoint.com/:i:/r/sites/bannerconnect/Images_AK/Facilities/banner-lassen-medical-center.jpg?csf=1&e=OYqnKm",
+            "Url": "https://testbhealth.sharepoint.com/:i:/r/sites/bannerconnect/Images_AK/Facilities/banner-lassen-medical-center.jpg?csf=1&e=OYqnKm"
+        },
+        "isActive": true,
+        "BC_FacilityLink": {
+            "Description": "Lassen Medical Center",
+            "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Lassen-Medical"
+        },
+        "BC_OfficeLocationsListId": [
+            131,
+            533,
+            534,
+            535
+        ],
+        "BH_SiteCode_LookupId": [
+            533
+        ],
+        "OData__ColorTag": null,
+        "ID": 24,
+        "Modified": "2025-03-17T23:24:06Z",
+        "Created": "2020-03-27T11:59:35Z",
+        "AuthorId": 1073741823,
+        "EditorId": 6,
+        "OData__UIVersionString": "1.0",
+        "Attachments": false,
+        "GUID": "d423ea61-45d9-4239-a71e-48cc66b13e11",
+        "BC_FacilityLinks": [
+            {
+                "Title": "Dining Room Menu",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Lassen-Medical/Pages/Menu-Lassen-Medical-Center.aspx",
+                "WindowTarget": "Same Window"
+            },
+            {
+                "Title": "Phone List",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Lassen-Medical/Resources/Pages/Phone-List-Lassen.aspx",
+                "WindowTarget": null
+            },
+            {
+                "Title": "On-Call Schedule",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Lassen-Medical/Pages/On-Call-Schedule-Lassen.aspx",
+                "WindowTarget": "Same Window"
+            },
+            {
+                "Title": "Medical Staff Services",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Lassen-Medical/Departments/Pages/Medical-Staff-Services.aspx",
+                "WindowTarget": "Same Window"
+            }
+        ]
+    },
+    {
+        "odata.type": "SP.Data.BC_x005f_FacilitiesListItem",
+        "odata.id": "baed679e-de2a-4300-901d-29dd137975d5",
+        "odata.etag": "\"4\"",
+        "odata.editLink": "Web/Lists(guid'8569e85a-c826-4152-ba96-790eeebb5938')/Items(28)",
+        "FileSystemObjectType": 0,
+        "Id": 28,
+        "ServerRedirectedEmbedUri": null,
+        "ServerRedirectedEmbedUrl": "",
+        "ContentTypeId": "0x01003CA0504676C2AA4295EC7B99E16A04EE",
+        "Title": "Page Hospital",
+        "ComplianceAssetId": null,
+        "BC_FacilityImage": {
+            "Description": "https://testbhealth.sharepoint.com/:i:/r/sites/bannerconnect/Images_AK/Facilities/page-hospital.jpg?csf=1&e=6hNv9H",
+            "Url": "https://testbhealth.sharepoint.com/:i:/r/sites/bannerconnect/Images_AK/Facilities/page-hospital.jpg?csf=1&e=6hNv9H"
+        },
+        "isActive": true,
+        "BC_FacilityLink": {
+            "Description": "Page Hospital",
+            "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Page-Hospital"
+        },
+        "BC_OfficeLocationsListId": [
+            107,
+            166,
+            423,
+            425,
+            551
+        ],
+        "BH_SiteCode_LookupId": [
+            423
+        ],
+        "OData__ColorTag": null,
+        "ID": 28,
+        "Modified": "2025-03-17T23:24:30Z",
+        "Created": "2020-03-27T11:59:37Z",
+        "AuthorId": 1073741823,
+        "EditorId": 6,
+        "OData__UIVersionString": "1.0",
+        "Attachments": false,
+        "GUID": "1a7a1210-86c5-486c-822f-9d7deda36d5a",
+        "BC_FacilityLinks": []
+    },
+    {
+        "odata.type": "SP.Data.BC_x005f_FacilitiesListItem",
+        "odata.id": "717129c2-7719-4efa-96e7-040c7dae5796",
+        "odata.etag": "\"3\"",
+        "odata.editLink": "Web/Lists(guid'8569e85a-c826-4152-ba96-790eeebb5938')/Items(29)",
+        "FileSystemObjectType": 0,
+        "Id": 29,
+        "ServerRedirectedEmbedUri": null,
+        "ServerRedirectedEmbedUrl": "",
+        "ContentTypeId": "0x01003CA0504676C2AA4295EC7B99E16A04EE",
+        "Title": "Payson Medical Center",
+        "ComplianceAssetId": null,
+        "BC_FacilityImage": {
+            "Description": "https://testbhealth.sharepoint.com/:i:/r/sites/bannerconnect/Images_AK/Facilities/banner-payson-medical-center.jpg?csf=1&e=CDAsmk",
+            "Url": "https://testbhealth.sharepoint.com/:i:/r/sites/bannerconnect/Images_AK/Facilities/banner-payson-medical-center.jpg?csf=1&e=CDAsmk"
+        },
+        "isActive": true,
+        "BC_FacilityLink": {
+            "Description": "Payson Medical Center",
+            "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Payson-Medical"
+        },
+        "BC_OfficeLocationsListId": [
+            167,
+            169,
+            552,
+            553,
+            554,
+            555
+        ],
+        "BH_SiteCode_LookupId": [
+            554
+        ],
+        "OData__ColorTag": null,
+        "ID": 29,
+        "Modified": "2025-03-17T23:24:38Z",
+        "Created": "2020-03-27T11:59:37Z",
+        "AuthorId": 1073741823,
+        "EditorId": 6,
+        "OData__UIVersionString": "1.0",
+        "Attachments": false,
+        "GUID": "8cf6fcea-284b-4047-bcce-9f0d5125e0cf",
+        "BC_FacilityLinks": []
+    },
+    {
+        "odata.type": "SP.Data.BC_x005f_FacilitiesListItem",
+        "odata.id": "bdceba5f-4c28-46af-a3d8-e9a932235357",
+        "odata.etag": "\"3\"",
+        "odata.editLink": "Web/Lists(guid'8569e85a-c826-4152-ba96-790eeebb5938')/Items(30)",
+        "FileSystemObjectType": 0,
+        "Id": 30,
+        "ServerRedirectedEmbedUri": null,
+        "ServerRedirectedEmbedUrl": "",
+        "ContentTypeId": "0x01003CA0504676C2AA4295EC7B99E16A04EE",
+        "Title": "Platte County Hospital",
+        "ComplianceAssetId": null,
+        "BC_FacilityImage": {
+            "Description": "https://testbhealth.sharepoint.com/:i:/r/sites/bannerconnect/Images_AK/Facilities/platte-county-memorial-hospital.jpg?csf=1&e=oPQTtg",
+            "Url": "https://testbhealth.sharepoint.com/:i:/r/sites/bannerconnect/Images_AK/Facilities/platte-county-memorial-hospital.jpg?csf=1&e=oPQTtg"
+        },
+        "isActive": true,
+        "BC_FacilityLink": {
+            "Description": "Platte County Hospital",
+            "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Platte-County"
+        },
+        "BC_OfficeLocationsListId": [
+            429,
+            430,
+            556,
+            557
+        ],
+        "BH_SiteCode_LookupId": [
+            556
+        ],
+        "OData__ColorTag": null,
+        "ID": 30,
+        "Modified": "2025-03-17T23:24:45Z",
+        "Created": "2020-03-27T11:59:37Z",
+        "AuthorId": 1073741823,
+        "EditorId": 6,
+        "OData__UIVersionString": "1.0",
+        "Attachments": false,
+        "GUID": "cc17d434-b34a-4344-b755-f352e54af4ba",
+        "BC_FacilityLinks": [
+            {
+                "Title": "On-Call Schedule",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Platte-County/Pages/On-Call-Schedule.aspx",
+                "WindowTarget": "Same Window"
+            },
+            {
+                "Title": "Cafe Menu",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Platte-County/Pages/PCMH-Menu.aspx",
+                "WindowTarget": "Same Window"
+            },
+            {
+                "Title": "Medical Staff Services",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Platte-County/Departments/Pages/Medical-Staff-Services.aspx",
+                "WindowTarget": "Same Window"
+            }
+        ]
+    },
+    {
+        "odata.type": "SP.Data.BC_x005f_FacilitiesListItem",
+        "odata.id": "26389a50-5af9-4561-80a4-7eee834ed574",
+        "odata.etag": "\"2\"",
+        "odata.editLink": "Web/Lists(guid'8569e85a-c826-4152-ba96-790eeebb5938')/Items(32)",
+        "FileSystemObjectType": 0,
+        "Id": 32,
+        "ServerRedirectedEmbedUri": null,
+        "ServerRedirectedEmbedUrl": "",
+        "ContentTypeId": "0x01003CA0504676C2AA4295EC7B99E16A04EE",
+        "Title": "Sterling Regional Medical Center",
+        "ComplianceAssetId": null,
+        "BC_FacilityImage": {
+            "Description": "https://testbhealth.sharepoint.com/sites/BannerConnect/Images_AK/Facilities/sterling-regional-medcenter.jpg",
+            "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Images_AK/Facilities/sterling-regional-medcenter.jpg"
+        },
+        "isActive": true,
+        "BC_FacilityLink": {
+            "Description": "Sterling Regional Medical Center",
+            "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Sterling-Regional"
+        },
+        "BC_OfficeLocationsListId": [
+            436,
+            437,
+            440,
+            558,
+            559,
+            560
+        ],
+        "BH_SiteCode_LookupId": [
+            437
+        ],
+        "OData__ColorTag": null,
+        "ID": 32,
+        "Modified": "2021-07-14T22:51:56Z",
+        "Created": "2020-03-27T11:59:38Z",
+        "AuthorId": 1073741823,
+        "EditorId": 12,
+        "OData__UIVersionString": "1.0",
+        "Attachments": false,
+        "GUID": "3b08d624-6d38-4aa0-9c88-c6671aed8de9",
+        "BC_FacilityLinks": [
+            {
+                "Title": "On Call Schedule",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Sterling-Regional/Pages/On-Call-Schedule.aspx",
+                "WindowTarget": "Same Window"
+            },
+            {
+                "Title": "Policies and Procedures Resource Center",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Sterling-Regional/Departments-and-Resources/Pages/-Policies-and-Procedures-Resource-Center.aspx",
+                "WindowTarget": "Same Window"
+            },
+            {
+                "Title": "iService Desk",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Facilities/Pages/TMA-Service-and-Repair-Requests.aspx",
+                "WindowTarget": "Same Window"
+            },
+            {
+                "Title": "Medical Staff Services",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Sterling-Regional/Departments-and-Resources/Pages/Medical-Staff-Services.aspx",
+                "WindowTarget": "Same Window"
+            },
+            {
+                "Title": "SRM Bistro Menu",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Sterling-Regional/Pages/SRM-Bistro-Menu.aspx",
+                "WindowTarget": "Same Window"
+            }
+        ]
+    },
+    {
+        "odata.type": "SP.Data.BC_x005f_FacilitiesListItem",
+        "odata.id": "d3df37c1-5e98-4efd-9aec-928adbd6fce9",
+        "odata.etag": "\"3\"",
+        "odata.editLink": "Web/Lists(guid'8569e85a-c826-4152-ba96-790eeebb5938')/Items(34)",
+        "FileSystemObjectType": 0,
+        "Id": 34,
+        "ServerRedirectedEmbedUri": null,
+        "ServerRedirectedEmbedUrl": "",
+        "ContentTypeId": "0x01003CA0504676C2AA4295EC7B99E16A04EE",
+        "Title": "Thunderbird Medical Center",
+        "ComplianceAssetId": null,
+        "BC_FacilityImage": {
+            "Description": "https://testbhealth.sharepoint.com/:i:/r/sites/bannerconnect/Images_AK/Facilities/banner-thunderbird-medical-center.jpg?csf=1&e=Vm8aaB",
+            "Url": "https://testbhealth.sharepoint.com/:i:/r/sites/bannerconnect/Images_AK/Facilities/banner-thunderbird-medical-center.jpg?csf=1&e=Vm8aaB"
+        },
+        "isActive": true,
+        "BC_FacilityLink": {
+            "Description": "Thunderbird Medical Center",
+            "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Thunderbird-Medical"
+        },
+        "BC_OfficeLocationsListId": [
+            191,
+            196,
+            197,
+            198,
+            333,
+            443,
+            622,
+            623,
+            624,
+            625,
+            628,
+            626,
+            627
+        ],
+        "BH_SiteCode_LookupId": [
+            443
+        ],
+        "OData__ColorTag": null,
+        "ID": 34,
+        "Modified": "2025-03-17T23:24:53Z",
+        "Created": "2020-03-27T11:59:39Z",
+        "AuthorId": 1073741823,
+        "EditorId": 6,
+        "OData__UIVersionString": "1.0",
+        "Attachments": false,
+        "GUID": "bc0ec125-0040-4207-a16a-8322a2b326e2",
+        "BC_FacilityLinks": [
+            {
+                "Title": "BTMC Culinary & Nutrition Services",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Thunderbird-Medical/Pages/BTMC-Culinary-Nutrition-Services.aspx",
+                "WindowTarget": "Same Window"
+            },
+            {
+                "Title": "iService Desk",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Facilities/Pages/TMA-Service-and-Repair-Requests.aspx",
+                "WindowTarget": "Same Window"
+            },
+            {
+                "Title": "On Call - Medical Staff Services",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Thunderbird-Medical/Pages/Medical-Staff-Services.aspx",
+                "WindowTarget": "Same Window"
+            },
+            {
+                "Title": "Case Management",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Thunderbird-Medical/Departments/Pages/Case-MGMT.aspx",
+                "WindowTarget": "Same Window"
+            },
+            {
+                "Title": "Clinical Care Operations Staffing",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Thunderbird-Medical/Departments/Pages/-Clinical-Care-Operations-Staffing.aspx",
+                "WindowTarget": "Same Window"
+            }
+        ]
+    },
+    {
+        "odata.type": "SP.Data.BC_x005f_FacilitiesListItem",
+        "odata.id": "b62c7c09-e808-42ba-8144-2a41d0f10b13",
+        "odata.etag": "\"2\"",
+        "odata.editLink": "Web/Lists(guid'8569e85a-c826-4152-ba96-790eeebb5938')/Items(35)",
+        "FileSystemObjectType": 0,
+        "Id": 35,
+        "ServerRedirectedEmbedUri": null,
+        "ServerRedirectedEmbedUrl": "",
+        "ContentTypeId": "0x01003CA0504676C2AA4295EC7B99E16A04EE",
+        "Title": "Torrington Community Hospital",
+        "ComplianceAssetId": null,
+        "BC_FacilityImage": {
+            "Description": "https://testbhealth.sharepoint.com/sites/BannerConnect/Images_AK/Facilities/torrington%20community-hospital.jpg",
+            "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Images_AK/Facilities/torrington%20community-hospital.jpg"
+        },
+        "isActive": true,
+        "BC_FacilityLink": {
+            "Description": "Torrington Community Hospital",
+            "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Torrington-Community"
+        },
+        "BC_OfficeLocationsListId": [
+            356,
+            444,
+            561,
+            562,
+            563,
+            564,
+            565
+        ],
+        "BH_SiteCode_LookupId": [
+            444
+        ],
+        "OData__ColorTag": null,
+        "ID": 35,
+        "Modified": "2021-07-14T22:52:25Z",
+        "Created": "2020-03-27T11:59:40Z",
+        "AuthorId": 1073741823,
+        "EditorId": 12,
+        "OData__UIVersionString": "1.0",
+        "Attachments": false,
+        "GUID": "10a339c4-2e17-4628-a935-963d4a9c4301",
+        "BC_FacilityLinks": [
+            {
+                "Title": "On-Call Schedule",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Torrington-Community/Pages/On-Call-Schedule-Torrington.aspx",
+                "WindowTarget": "Same Window"
+            },
+            {
+                "Title": "Cafeteria Menu",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Torrington-Community/Pages/Cafeteria-Menu.aspx",
+                "WindowTarget": "Same Window"
+            },
+            {
+                "Title": "Phone Directory",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Torrington-Community/Resources/Pages/Phone-Directory-Torrington.aspx",
+                "WindowTarget": null
+            }
+        ]
+    },
+    {
+        "odata.type": "SP.Data.BC_x005f_FacilitiesListItem",
+        "odata.id": "dd2192e4-e2ac-403e-aab0-9ee7e4471f1f",
+        "odata.etag": "\"3\"",
+        "odata.editLink": "Web/Lists(guid'8569e85a-c826-4152-ba96-790eeebb5938')/Items(36)",
+        "FileSystemObjectType": 0,
+        "Id": 36,
+        "ServerRedirectedEmbedUri": null,
+        "ServerRedirectedEmbedUrl": "",
+        "ContentTypeId": "0x01003CA0504676C2AA4295EC7B99E16A04EE",
+        "Title": "Urgent Care",
+        "ComplianceAssetId": null,
+        "BC_FacilityImage": {
+            "Description": "https://testbhealth.sharepoint.com/:i:/r/sites/bannerconnect/Images_AK/Facilities/banner-urgent-care-7th-camelback.jpg?csf=1&e=ROHVrd",
+            "Url": "https://testbhealth.sharepoint.com/:i:/r/sites/bannerconnect/Images_AK/Facilities/banner-urgent-care-7th-camelback.jpg?csf=1&e=ROHVrd"
+        },
+        "isActive": false,
+        "BC_FacilityLink": {
+            "Description": "Urgent Care",
+            "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Urgent-Care"
+        },
+        "BC_OfficeLocationsListId": [
+            215,
+            216,
+            286,
+            568,
+            569,
+            570,
+            571,
+            572,
+            573,
+            574,
+            575,
+            576,
+            577,
+            578,
+            579,
+            580,
+            581,
+            582,
+            583,
+            584,
+            585,
+            586,
+            587,
+            588,
+            589,
+            590,
+            591,
+            592,
+            593,
+            594,
+            595,
+            596,
+            597,
+            598,
+            599,
+            600,
+            601,
+            602,
+            603,
+            604,
+            605,
+            606,
+            607,
+            608,
+            609,
+            610,
+            611,
+            612,
+            613,
+            614,
+            615,
+            616,
+            617,
+            618,
+            619,
+            620,
+            621
+        ],
+        "BH_SiteCode_LookupId": [
+            568
+        ],
+        "OData__ColorTag": null,
+        "ID": 36,
+        "Modified": "2025-03-17T23:25:01Z",
+        "Created": "2020-03-27T11:59:39Z",
+        "AuthorId": 1073741823,
+        "EditorId": 6,
+        "OData__UIVersionString": "1.0",
+        "Attachments": false,
+        "GUID": "988b271b-720e-4e22-a4a4-34e41de48a44",
+        "BC_FacilityLinks": []
+    },
+    {
+        "odata.type": "SP.Data.BC_x005f_FacilitiesListItem",
+        "odata.id": "a6bf8202-6799-44d4-9360-ae025af7300e",
+        "odata.etag": "\"3\"",
+        "odata.editLink": "Web/Lists(guid'8569e85a-c826-4152-ba96-790eeebb5938')/Items(37)",
+        "FileSystemObjectType": 0,
+        "Id": 37,
+        "ServerRedirectedEmbedUri": null,
+        "ServerRedirectedEmbedUrl": "",
+        "ContentTypeId": "0x01003CA0504676C2AA4295EC7B99E16A04EE",
+        "Title": "Washakie Medical Center",
+        "ComplianceAssetId": null,
+        "BC_FacilityImage": {
+            "Description": "https://testbhealth.sharepoint.com/:i:/r/sites/bannerconnect/Images_AK/Facilities/washakie-medical-center.jpg?csf=1&e=KTlJfT",
+            "Url": "https://testbhealth.sharepoint.com/:i:/r/sites/bannerconnect/Images_AK/Facilities/washakie-medical-center.jpg?csf=1&e=KTlJfT"
+        },
+        "isActive": true,
+        "BC_FacilityLink": {
+            "Description": "Washakie Medical Center",
+            "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Washakie-Medical"
+        },
+        "BC_OfficeLocationsListId": [
+            449,
+            566
+        ],
+        "BH_SiteCode_LookupId": [
+            449
+        ],
+        "OData__ColorTag": null,
+        "ID": 37,
+        "Modified": "2025-03-17T23:25:11Z",
+        "Created": "2020-03-27T11:59:40Z",
+        "AuthorId": 1073741823,
+        "EditorId": 6,
+        "OData__UIVersionString": "1.0",
+        "Attachments": false,
+        "GUID": "a8165279-afeb-4265-9441-3fdb8ce15bcd",
+        "BC_FacilityLinks": [
+            {
+                "Title": "On Call Schedule",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Washakie-Medical/Pages/On-Call-Schedules-Washakie.aspx",
+                "WindowTarget": "Same Window"
+            },
+            {
+                "Title": "Cafe Menu",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Washakie-Medical/Pages/Washakie-Cafe-Menus.aspx",
+                "WindowTarget": "Same Window"
+            },
+            {
+                "Title": "Medical Staff Services",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Washakie-Medical/Departments/Pages/Medical-Staff-Services.aspx",
+                "WindowTarget": "Same Window"
+            },
+            {
+                "Title": "Certification Class Schedule",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Washakie-Medical/Resources/Pages/Certification-Class-Schedule.aspx",
+                "WindowTarget": "Same Window"
+            }
+        ]
+    },
+    {
+        "odata.type": "SP.Data.BC_x005f_FacilitiesListItem",
+        "odata.id": "515f2c8e-d8b3-4959-9e8f-5831da52d9b0",
+        "odata.etag": "\"3\"",
+        "odata.editLink": "Web/Lists(guid'8569e85a-c826-4152-ba96-790eeebb5938')/Items(38)",
+        "FileSystemObjectType": 0,
+        "Id": 38,
+        "ServerRedirectedEmbedUri": null,
+        "ServerRedirectedEmbedUrl": "",
+        "ContentTypeId": "0x01003CA0504676C2AA4295EC7B99E16A04EE",
+        "Title": "Ogallala Community Hospital",
+        "ComplianceAssetId": null,
+        "BC_FacilityImage": {
+            "Description": "https://testbhealth.sharepoint.com/:i:/r/sites/bannerconnect/Images_AK/Facilities/ogallala-community-hospital.jpg?csf=1&e=ZC1Gz8",
+            "Url": "https://testbhealth.sharepoint.com/:i:/r/sites/bannerconnect/Images_AK/Facilities/ogallala-community-hospital.jpg?csf=1&e=ZC1Gz8"
+        },
+        "isActive": true,
+        "BC_FacilityLink": {
+            "Description": "Ogallala Community Hospital",
+            "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Ogallala-Medical"
+        },
+        "BC_OfficeLocationsListId": [
+            418,
+            421,
+            549,
+            550
+        ],
+        "BH_SiteCode_LookupId": [
+            418
+        ],
+        "OData__ColorTag": null,
+        "ID": 38,
+        "Modified": "2025-03-17T23:25:17Z",
+        "Created": "2020-07-17T03:09:43Z",
+        "AuthorId": 1073741823,
+        "EditorId": 6,
+        "OData__UIVersionString": "1.0",
+        "Attachments": false,
+        "GUID": "f9d863e4-3ab5-4429-87c4-918e21b545e7",
+        "BC_FacilityLinks": [
+            {
+                "Title": "On Call Schedule",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Ogallala-Medical/Pages/On-Call-Schedules.aspx",
+                "WindowTarget": "Same Window"
+            }
+        ]
+    },
+    {
+        "odata.type": "SP.Data.BC_x005f_FacilitiesListItem",
+        "odata.id": "78c28b3c-09ae-4ee0-88fc-8fa21a10ae61",
+        "odata.etag": "\"2\"",
+        "odata.editLink": "Web/Lists(guid'8569e85a-c826-4152-ba96-790eeebb5938')/Items(41)",
+        "FileSystemObjectType": 0,
+        "Id": 41,
+        "ServerRedirectedEmbedUri": null,
+        "ServerRedirectedEmbedUrl": "",
+        "ContentTypeId": "0x01003CA0504676C2AA4295EC7B99E16A04EE",
+        "Title": "NoCo",
+        "ComplianceAssetId": null,
+        "BC_FacilityImage": {
+            "Description": "https://testbhealth.sharepoint.com/sites/BannerConnect/Images_AK/Facilities/north-colorado-medical-center.jpg",
+            "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Images_AK/Facilities/north-colorado-medical-center.jpg"
+        },
+        "isActive": true,
+        "BC_FacilityLink": {
+            "Description": "NoCo",
+            "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/NoCo"
+        },
+        "BC_OfficeLocationsListId": [
+            738,
+            635,
+            636,
+            637,
+            739,
+            740,
+            152,
+            742,
+            282,
+            291,
+            744,
+            321,
+            745,
+            746,
+            747,
+            748,
+            749,
+            750,
+            751,
+            752,
+            753,
+            754,
+            408,
+            755,
+            412,
+            413,
+            756,
+            757,
+            414,
+            758,
+            759,
+            760,
+            71,
+            540,
+            72,
+            541,
+            276,
+            295,
+            296,
+            297,
+            309,
+            366,
+            545,
+            536,
+            537,
+            538,
+            539,
+            376
+        ],
+        "BH_SiteCode_LookupId": [
+            408,
+            291,
+            376,
+            71
+        ],
+        "OData__ColorTag": null,
+        "ID": 41,
+        "Modified": "2021-07-14T23:06:23Z",
+        "Created": "2020-12-24T16:06:33Z",
+        "AuthorId": 16,
+        "EditorId": 12,
+        "OData__UIVersionString": "1.0",
+        "Attachments": false,
+        "GUID": "fea61985-6736-4f2d-85d5-d3b480b37294",
+        "BC_FacilityLinks": [
+            {
+                "Title": "iService Desk",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Facilities/Pages/TMA-Service-and-Repair-Requests.aspx",
+                "WindowTarget": "Same Window"
+            },
+            {
+                "Title": "Culinary & Nutrition",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/NoCo/Pages/Culinary-Nutrition.aspx",
+                "WindowTarget": "Same Window"
+            },
+            {
+                "Title": " On Call Schedules",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/NoCo/Pages/On-Call-Schedules.aspx",
+                "WindowTarget": "Same Window"
+            },
+            {
+                "Title": "Pharmacy Services",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/NoCo/Departments/Pages/Pharmacy-Services-NOCO.aspx",
+                "WindowTarget": "Same Window"
+            },
+            {
+                "Title": " Stroke and Sepsis",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/NoCo/Stroke",
+                "WindowTarget": "Same Window"
+            }
+        ]
+    },
+    {
+        "odata.type": "SP.Data.BC_x005f_FacilitiesListItem",
+        "odata.id": "05d50c01-0b58-48a5-872a-adc2380dd377",
+        "odata.etag": "\"2\"",
+        "odata.editLink": "Web/Lists(guid'8569e85a-c826-4152-ba96-790eeebb5938')/Items(42)",
+        "FileSystemObjectType": 0,
+        "Id": 42,
+        "ServerRedirectedEmbedUri": null,
+        "ServerRedirectedEmbedUrl": "",
+        "ContentTypeId": "0x01003CA0504676C2AA4295EC7B99E16A04EE",
+        "Title": "Wyoming Medical Center",
+        "ComplianceAssetId": null,
+        "BC_FacilityImage": {
+            "Description": "https://testbhealth.sharepoint.com/sites/BannerConnect/Images_AK/Facilities/Wyoming%20Medical%20Center.gif",
+            "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Images_AK/Facilities/Wyoming%20Medical%20Center.gif"
+        },
+        "isActive": true,
+        "BC_FacilityLink": {
+            "Description": "Wyoming Medical Center",
+            "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Wyoming-Medical-Center"
+        },
+        "BC_OfficeLocationsListId": [
+            567
+        ],
+        "BH_SiteCode_LookupId": [],
+        "OData__ColorTag": null,
+        "ID": 42,
+        "Modified": "2024-05-03T17:26:28Z",
+        "Created": "2021-01-06T23:57:54Z",
+        "AuthorId": 16,
+        "EditorId": 14,
+        "OData__UIVersionString": "1.0",
+        "Attachments": false,
+        "GUID": "a9c2a2d1-f1c1-4fe3-a537-7d56651e669e",
+        "BC_FacilityLinks": []
+    },
+    {
+        "odata.type": "SP.Data.BC_x005f_FacilitiesListItem",
+        "odata.id": "e557c253-a811-408f-8248-b5433d573945",
+        "odata.etag": "\"2\"",
+        "odata.editLink": "Web/Lists(guid'8569e85a-c826-4152-ba96-790eeebb5938')/Items(48)",
+        "FileSystemObjectType": 0,
+        "Id": 48,
+        "ServerRedirectedEmbedUri": null,
+        "ServerRedirectedEmbedUrl": "",
+        "ContentTypeId": "0x01003CA0504676C2AA4295EC7B99E16A04EE",
+        "Title": "Ocotillo Medical Center",
+        "ComplianceAssetId": null,
+        "BC_FacilityImage": {
+            "Description": "https://testbhealth.sharepoint.com/sites/BannerConnect/Images_AK/Facilities/banner-ocotillo-medical-center.jpg",
+            "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Images_AK/Facilities/banner-ocotillo-medical-center.jpg"
+        },
+        "isActive": true,
+        "BC_FacilityLink": {
+            "Description": "Ocotillo Medical Center",
+            "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Ocotillo-Medical-Center"
+        },
+        "BC_OfficeLocationsListId": [
+            546,
+            547,
+            548
+        ],
+        "BH_SiteCode_LookupId": [
+            548
+        ],
+        "OData__ColorTag": null,
+        "ID": 48,
+        "Modified": "2021-07-14T23:06:52Z",
+        "Created": "2021-03-11T22:18:57Z",
+        "AuthorId": 13,
+        "EditorId": 12,
+        "OData__UIVersionString": "1.0",
+        "Attachments": false,
+        "GUID": "37ec2711-d391-4a8e-ab01-10515e6d5b21",
+        "BC_FacilityLinks": [
+            {
+                "Title": "Cafe/Bistro",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Ocotillo-Medical-Center/Pages/Cafe-Bistro.aspx",
+                "WindowTarget": "Same Window"
+            },
+            {
+                "Title": "On Call Schedule",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Ocotillo-Medical-Center/Pages/On-Call-Schedules.aspx",
+                "WindowTarget": "Same Window"
+            },
+            {
+                "Title": "Care Coordination",
+                "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Ocotillo-Medical-Center/Depts-Resources/Pages/Care-Coordination.aspx",
+                "WindowTarget": "Same Window"
+            }
+        ]
+    },
+    {
+        "odata.type": "SP.Data.BC_x005f_FacilitiesListItem",
+        "odata.id": "d5cdc72c-3d57-4eb6-ac12-60bb43604d67",
+        "odata.etag": "\"2\"",
+        "odata.editLink": "Web/Lists(guid'8569e85a-c826-4152-ba96-790eeebb5938')/Items(52)",
+        "FileSystemObjectType": 0,
+        "Id": 52,
+        "ServerRedirectedEmbedUri": null,
+        "ServerRedirectedEmbedUrl": "",
+        "ContentTypeId": "0x01003CA0504676C2AA4295EC7B99E16A04EE",
+        "Title": "Urgent Care Services",
+        "ComplianceAssetId": null,
+        "BC_FacilityImage": {
+            "Description": "https://testbhealth.sharepoint.com/sites/BannerConnect/Images_AK/Facilities/banner-urgent-care-7th-camelback.jpg?csf=1&e=ROHVrd&cid=af842906-cd07-4fc9-a3c3-88cc409bd6fb",
+            "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/Images_AK/Facilities/banner-urgent-care-7th-camelback.jpg?csf=1&e=ROHVrd&cid=af842906-cd07-4fc9-a3c3-88cc409bd6fb"
+        },
+        "isActive": true,
+        "BC_FacilityLink": {
+            "Description": "https://testbhealth.sharepoint.com/sites/BannerConnect/BUCS",
+            "Url": "https://testbhealth.sharepoint.com/sites/BannerConnect/BUCS"
+        },
+        "BC_OfficeLocationsListId": [],
+        "BH_SiteCode_LookupId": [],
+        "OData__ColorTag": null,
+        "ID": 52,
+        "Modified": "2022-01-25T20:21:28Z",
+        "Created": "2022-01-25T20:19:26Z",
+        "AuthorId": 14,
+        "EditorId": 14,
+        "OData__UIVersionString": "1.0",
+        "Attachments": false,
+        "GUID": "fd92bc25-a6bb-4540-bc3b-6178932a4ae8",
+        "BC_FacilityLinks": []
+    },
+    {
+        "odata.type": "SP.Data.BC_x005f_FacilitiesListItem",
+        "odata.id": "76089df1-eab0-482f-8679-775afb9f7ef3",
+        "odata.etag": "\"3\"",
+        "odata.editLink": "Web/Lists(guid'8569e85a-c826-4152-ba96-790eeebb5938')/Items(53)",
+        "FileSystemObjectType": 0,
+        "Id": 53,
+        "ServerRedirectedEmbedUri": null,
+        "ServerRedirectedEmbedUrl": "",
+        "ContentTypeId": "0x01003CA0504676C2AA4295EC7B99E16A04EE",
+        "Title": "No Assigned Location",
+        "ComplianceAssetId": null,
+        "BC_FacilityImage": {
+            "Description": "https://testbhealth.sharepoint.com/:i:/r/sites/bannerconnect/Images_AK/Facilities/banner-gateway-medical-center.jpg",
+            "Url": "https://testbhealth.sharepoint.com/:i:/r/sites/bannerconnect/Images_AK/Facilities/banner-gateway-medical-center.jpg"
+        },
+        "isActive": true,
+        "BC_FacilityLink": null,
+        "BC_OfficeLocationsListId": [],
+        "BH_SiteCode_LookupId": [],
+        "OData__ColorTag": null,
+        "ID": 53,
+        "Modified": "2025-03-17T23:25:28Z",
+        "Created": "2023-03-15T16:39:05Z",
+        "AuthorId": 16,
+        "EditorId": 6,
+        "OData__UIVersionString": "1.0",
+        "Attachments": false,
+        "GUID": "519e5e57-8cf8-4cc0-b27f-ec2a590a1919",
+        "BC_FacilityLinks": []
+    }
+]
