@@ -1,6 +1,3 @@
-
-https://teams.microsoft.com/l/meetup-join/19%3ameeting_NzI4YWUyZjktNzJjZS00NTg3LWEzMmYtYmE3NjY3NWIyMGEz%40thread.v2/0?context=%7b%22Tid%22%3a%22adeadcd2-3aaf-4835-b273-1ebe8a7726f1%22%2c%22Oid%22%3a%220741ca54-004e-45ff-8999-e21c4680edd5%22%7d
-
 private async uploadFileToSharePoint(attachment: IFilePickerResult): Promise<string> {
     if (!attachment || attachment.fileAbsoluteUrl !== null) {
       return attachment?.fileAbsoluteUrl || "";
